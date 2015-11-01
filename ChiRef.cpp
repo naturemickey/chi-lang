@@ -7,7 +7,7 @@
 
 #include "ChiRef.h"
 
-ChiRef::ChiRef(int * pi) : p(pi) {
+ChiRef::ChiRef(void * pi) : p(pi) {
 }
 
 ChiRef::~ChiRef() {

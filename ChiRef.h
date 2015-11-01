@@ -11,9 +11,9 @@
 #include <memory>
 
 class ChiRef {
-	std::shared_ptr<int> p;
+	std::shared_ptr<void> p;
 public:
-	ChiRef(int * pi);
+	ChiRef(void * pi);
 	virtual ~ChiRef();
 };
 
