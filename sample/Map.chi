@@ -1,0 +1,12 @@
+native struct Map[K, V] {
+	lambda get : K -> V;
+	lambda size : Integer;
+	lambda keySet : () -> Set[K];
+	lambda values : () -> Array[V];
+	lambda forEach : ((K, V));
+}
+struct _pair[T1, T2] {
+	val o1 : T1;
+	val o2 : T2;
+}
+lambda =>[T1, T2] : (T1, T2) -> _pair[T1, T2] = (o1, o2) -> _pair(o1, o2);
