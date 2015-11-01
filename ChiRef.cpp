@@ -1,7 +1,7 @@
 /*
  * ChiRef.cpp
  *
- *  Created on: 2015Äê11ÔÂ1ÈÕ
+ *  Created on: 2015å¹´11æœˆ1æ—¥
  *      Author: Mickey
  */
 
@@ -12,4 +12,3 @@ ChiRef::ChiRef(void * pi) : p(pi) {
 
 ChiRef::~ChiRef() {
 }
-
