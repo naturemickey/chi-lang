@@ -8,7 +8,7 @@ native struct Boolean {
 		when true : true;
 		when false : b;
 	};
-	lambda not : () -> Boolean = case self {
+	lambda not : Boolean = case self {
 		when true: false;
 		when false : true;
 	};

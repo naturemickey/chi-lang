@@ -2,11 +2,15 @@ struct List[T] {
 	val _value : T;
 	val _rest default self;
 	
-	lambda hasRest : () -> Boolean = () -> self == _rest;
-	lambda appendFront : (T) -> List[T] = obj -> List[T](obj, self);
-	lambda first : () -> T = self._value;
-	lambda rest : () -> List[T] = () -> case hasRest {
+	lambda hasRest : Boolean = self == _rest;
+	lambda appendFront : T -> List[T] = obj -> List(obj, self);
+	lambda first : T = self._value;
+	lambda rest : List[T] = case hasRest {
 		when true : _rest;
 		when false : error("there is't rest.");
+	}
+	lambda map[E] : (T -> E) -> List[E] = m -> case hasRest {
+		when true : List(m(_value), _rest.map(m));
+		when false : List(m(_value));
 	}
 }

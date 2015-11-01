@@ -1,10 +1,17 @@
 native struct Array[T] {
-	lambda get : (Integer) -> T
-	lambda length : () -> Integer
+	lambda get : Integer -> T
+	lambda length : Integer
 	lambda findIndex : T -> Integer = obj -> _findIndex(self, obj, 0, length);
 	lambda slice : (Integer, Integer) -> _Slice[T] = (from, to) -> case {
 		when (from < to) && (from >= 0) && (to <= length) : _Slice(self, from to);
 		else error("index out of range.");
+	}
+	lambda appendFront : T -> Array[T];
+	lambda map[E] : (T -> E) -> Array[E] = f -> _map(f, 0);
+	lambda _map[E] : (T -> E, Integer) = (f, i) -> case {
+		when i == (length - 1) : Array(f(self.get(i));
+		when i < length : _map(f, i + 1).appendFront(f(self.get(i)));
+		else : error("index out of range.");
 	}
 }
 lambda _findIndex[T] : (Array[T], T, Integer, Integer) -> Integer= (array, obj, from, to) -> {
@@ -15,14 +22,12 @@ lambda _findIndex[T] : (Array[T], T, Integer, Integer) -> Integer= (array, obj, 
 	}
 }
 
-struct _Slice[T] : (array:Array[T], from:Integer, to:Integer) {
-	val _array : Array[T] = array;
-	val _from : Integer = from;
-	val _to : Integer = to;
-	lambda _length : () -> Integer = _to - from;
-
+struct _Slice[T] {
+	val _array : Array[T];
+	val _from : Integer;
+	val _to : Integer;
 	@Lazy
-	val length : Integer = _length();
+	lambda length : Integer = _to - from;
 
 	lambda get : Integer -> T = idx -> {
 		case {
