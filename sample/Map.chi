@@ -1,5 +1,6 @@
 native struct Map[K, V] {
-	lambda get : K -> V;
+	lambda getIfPresent[T] : (K, (K, V) -> T) -> T;
+	lambda getIfAbsent[T] : (K, (K, V) -> T) -> T;
 	lambda size : Integer;
 	lambda keySet : () -> Set[K];
 	lambda values : () -> Array[V];

@@ -1,8 +1,10 @@
-
-native struct Set[T] : (ss : T...) {
+// 后台用C++实现更好一点。
+struct Set[T] : (ss : T...) {
 	val _map : Map[T, Char] = Map(meta {
 		join(_buildAllParam(ss.length - 1, Array[T]()), ", ");
 	});
+	lambda contains : T -> Boolean = key -> _map.getIfPresent(key, (key, value) -> true);
+	lambda size : Integer = _map.size;
 }
 val Char _PRESENT = 'p';
 lambda _buildOneParam : Integer -> String = idx -> concat("ss.get(", idx, ")");
