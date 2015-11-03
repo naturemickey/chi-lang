@@ -1,6 +1,5 @@
-native struct Map[K, V] {
-	lambda getIfPresent[T] : (K, (K, V) -> T) -> T;
-	lambda getIfAbsent[T] : (K, (K, V) -> T) -> T;
+native struct Map[K, V] : (ps : _pair[K, V]...) {
+	lambda get[T] : (K, (K, V) -> T, K -> T) -> T;
 	lambda size : Integer;
 	lambda keySet : () -> Set[K];
 	lambda values : () -> Array[V];
