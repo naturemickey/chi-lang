@@ -8,10 +8,9 @@ native struct Array[T] {
 	}
 	lambda appendFront : T -> Array[T];
 	lambda map[E] : (T -> E) -> Array[E] = f -> _map(f, 0);
-	lambda _map[E] : (T -> E, Int) = (f, i) -> case {
-		when i == (length - 1) : Array(f(self.get(i));
-		when i < length : _map(f, i + 1).appendFront(f(self.get(i)));
-		else : error("index out of range.");
+	lambda _map[E] : (T -> E, Int) -> Array[E] = (f, i) -> case i {
+		when length - 1 : Array(f(self.get(i));
+		else _map(f, i + 1).appendFront(f(self.get(i)));
 	}
 	lambda filter : (T -> Boolean) -> Array[T] = f -> _filter(self, f, length - 1, Array[T]());
 	lambda reduce[E] : (E, (E, T) -> E) -> E = // 未实现

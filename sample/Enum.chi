@@ -1,0 +1,8 @@
+// enum是Chi的讲法糖
+// enum Color {RED, YELLOW, BLUE} 相当于
+// struct _Color {
+//	val RED : Int;
+//	val YELLOW : Int;
+//	val BLUE : Int;
+// }
+// val Color = Color(1, 2, 3);
