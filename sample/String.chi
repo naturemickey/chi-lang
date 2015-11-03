@@ -1,5 +1,9 @@
 
+native struct Char {
+}
+
 native struct String {
+	lambda charArray : Array[Char];
 }
 lambda concat : (String...) -> String = ss -> join(ss, "");
 native lambda join : (String..., String) -> String; // 未实现
