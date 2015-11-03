@@ -1,3 +1,5 @@
 
 native struct String {
 }
+lambda concat : (String...) -> String = ss -> join(ss, "");
+native lambda join : (String..., String) -> String; // 未实现

@@ -13,12 +13,22 @@ native struct Array[T] {
 		when i < length : _map(f, i + 1).appendFront(f(self.get(i)));
 		else : error("index out of range.");
 	}
+	lambda filter : (T -> Boolean) -> Array[T] = f -> _filter(self, f, length - 1, Array[T]());
+	lambda reduce[E] : (E, (E, T) -> E) -> E = // 未实现
+	lambda forEach : (Integer, (T)) = (idx, f) -> // 未实现
 }
 lambda _findIndex[T] : (Array[T], T, Integer, Integer) -> Integer= (array, obj, from, to) -> {
 	case {
 		when from >= to : -1;
 		when obj == array.get(from) : array.get(from);
 		else : _findIndex(array, obj, from + 1);
+	}
+}
+lambda _filter[T] : (Array[T], T -> Boolean, Integer, Array[T]) -> Array[T] = (array, f, idx, res) -> case idx {
+	when -1 : res;
+	else case f(array get idx) {
+		when true : _filter(array, f, idx - 1, res.appendFront(array get idx));
+		when false : _filter(array, f, idx - 1, res);
 	}
 }
 

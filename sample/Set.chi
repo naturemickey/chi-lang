@@ -1,3 +1,12 @@
 
-native struct Set {
+native struct Set[T] : (ss : T...) {
+	val _map : Map[T, Char] = Map(meta {
+		join(_buildAllParam(ss.length - 1, Array[T]()), ", ");
+	});
+}
+val Char _PRESENT = 'p';
+lambda _buildOneParam : Integer -> String = idx -> concat("ss.get(", idx, ")");
+lambda _buildAllParams : (Integer, Array[String]) -> Array[String] = (idx,  res) -> case idx {
+	case -1 : res;
+	else : _buildAllParams(idx - 1, res.appendFront(_buildOneParam(idx));
 }
