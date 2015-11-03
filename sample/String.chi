@@ -1,5 +1,6 @@
 
 native struct Char {
+	lambda toInt : Int;
 }
 
 native struct String {

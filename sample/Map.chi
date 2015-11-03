@@ -1,6 +1,6 @@
 native struct Map[K, V] : (ps : _pair[K, V]...) {
 	lambda get[T] : (K, (K, V) -> T, K -> T) -> T;
-	lambda size : Integer;
+	lambda size : Int;
 	lambda keySet : () -> Set[K];
 	lambda values : () -> Array[V];
 	lambda forEach : ((K, V));
