@@ -10,9 +10,16 @@ native struct Int {
 	lambda / = div;
 	lambda mod : Int -> Int;
 	lambda % = mod;
+	lambda > : Int -> Bool;
+	lambda < : Int -> Bool;
+	lambda >= : Int -> Bool;
+	lambda <= : Int -> Bool;
 
 	lambda < : Int -> Boolean = i -> self - i < 0
 	lambda <= : Int -> Boolean = i -> self - i <= 0;
 	lambda > : Int -> Boolean = i -> i < self;
 	lambda >= : Int -> Boolean = i -> i <= self;
+	
+	lambda toFloat : Float;
+	lambda parseInt : String -> Int;
 }

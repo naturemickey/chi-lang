@@ -3,7 +3,8 @@ native struct Map[K, V] : (ps : _pair[K, V]...) {
 	lambda size : Int;
 	lambda keySet : () -> Set[K];
 	lambda values : () -> Array[V];
-	lambda forEach : ((K, V));
+	lambda pairSet : Set[_pair[K, V]];
+	lambda forEach : ((K, V)) = f -> pairSet.forEach(p -> f(p.o1, p.o2));
 }
 struct _pair[T1, T2] {
 	val o1 : T1;

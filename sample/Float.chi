@@ -1,0 +1,4 @@
+
+native struct Float {
+	lambda toInt : Int
+}

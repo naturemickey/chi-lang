@@ -1,14 +1,11 @@
 // 后台用C++实现更好一点。
 struct Set[T] : (ss : T...) {
-	val _map : Map[T, Char] = Map(meta {
-		joinStr(_buildAllParam(ss.length - 1, Array[T]()), ", ");
-	});
+	val _map : Map[T, Char] = Map(ss.map(s -> (s => _PRESENT)));
 	lambda contains : T -> Boolean = key -> _map.get(key, (k, v) -> true, k -> false);
 	lambda size : Int = _map.size;
+	ambda forEach : (T); 
+	lambda map; // 未实现
+	lambda filter; // 未实现
+	lambda reduce; // 未实现
 }
 val Char _PRESENT = 'p';
-lambda _buildOneParam : Int -> String = idx -> concat("ss.get(", idx, ") => _PRESENT");
-lambda _buildAllParams : (Int, Array[String]) -> Array[String] = (idx,  res) -> case idx {
-	case -1 : res;
-	else : _buildAllParams(idx - 1, res.appendFront(_buildOneParam(idx));
-}
