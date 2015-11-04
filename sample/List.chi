@@ -12,10 +12,12 @@ struct List[T] {
 		when true : _rest;
 		when false : error("there is't rest.");
 	}
+	@lazy
 	lambda map[E] : (T -> E) -> List[E] = m -> case hasRest {
 		when true : List(m(_value), _rest.map(m));
 		when false : List(m(_value));
 	}
+	@lazy
 	lambda filter : (T -> Boolean) -> List[E] = m-> case m(_value) {
 		when true : case hasRest {
 			when true : List(_value, _rest.filter(m));
