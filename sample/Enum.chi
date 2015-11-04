@@ -1,8 +1,16 @@
 // enum是Chi的讲法糖
 // enum Color {RED, YELLOW, BLUE} 相当于
-// struct _Color {
-//	val RED : Int;
-//	val YELLOW : Int;
-//	val BLUE : Int;
+// native struct Color;
+// struct _EnumColor {
+//	val RED = Color();
+//	val YELLOW = Color();
+//	val BLUE = Color();
 // }
-// val Color = Color(1, 2, 3);
+// val enumColor = _EnumColor();
+// 
+// Color的本地实现“建议”为自增长的int。
+// 在语法层面：
+// 1.不同的enum是不同的类型，互相不能比较。
+// 2.同一个enum的不同对象的值都是不同的，如果比较==会返回false，没有其它比较运算。
+//
+// 对于enum，Chi会有一个语法糖：在case...when...逻辑结构中，when部分如果有这个enum的所有对象，则一定不能有else部分，否则就必须有else部分。
