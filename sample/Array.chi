@@ -6,6 +6,7 @@ native struct Array[T] {
 		when (from < to) && (from >= 0) && (to <= length) : _Slice(self, from to);
 		else error("index out of range.");
 	}
+	lambda subArray : (Int, Int) -> Array[T];
 	lambda appendFront : T -> Array[T];
 	lambda map[E] : (T -> E) -> Array[E] = f -> _map(f, 0);
 	lambda _map[E] : (T -> E, Int) -> Array[E] = (f, i) -> case i {
