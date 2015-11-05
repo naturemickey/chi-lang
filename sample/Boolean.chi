@@ -1,14 +1,14 @@
 
-native struct Boolean {
-	lambda && : Boolean -> Boolean = b -> case self {
+native struct Bool {
+	lambda && : Bool -> Bool = b -> case self {
 		when true : b;
 		when false : false;
 	};
-	lambda || : Boolean -> Boolean = b -> case self {
+	lambda || : Bool -> Bool = b -> case self {
 		when true : true;
 		when false : b;
 	};
-	lambda not : Boolean = case self {
+	lambda not : Bool = case self {
 		when true: false;
 		when false : true;
 	};

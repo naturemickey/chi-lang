@@ -2,10 +2,10 @@ struct List[T] {
 	val _value : T;
 	val _rest default _nil[T]();
 
-	lambda isEmpty : Boolean = false;
+	lambda isEmpty : Bool = false;
 	lambda frontValue : T = _value;
 	@lazy
-	lambda hasRest : Boolean = self._rest != _nil[T]();
+	lambda hasRest : Bool = self._rest != _nil[T]();
 	lambda appendFront : T -> List[T] = obj -> List(obj, self);
 	lambda first : T = self._value;
 	lambda rest : List[T] = case hasRest {
@@ -18,7 +18,7 @@ struct List[T] {
 		when false : List(m(_value));
 	}
 	@lazy
-	lambda filter : (T -> Boolean) -> List[E] = m-> case m(_value) {
+	lambda filter : (T -> Bool) -> List[E] = m-> case m(_value) {
 		when true : case hasRest {
 			when true : List(_value, _rest.filter(m));
 			when false : List(_value);

@@ -15,10 +15,10 @@ native struct Int {
 	lambda >= : Int -> Bool;
 	lambda <= : Int -> Bool;
 
-	lambda < : Int -> Boolean = i -> self - i < 0
-	lambda <= : Int -> Boolean = i -> self - i <= 0;
-	lambda > : Int -> Boolean = i -> i < self;
-	lambda >= : Int -> Boolean = i -> i <= self;
+	lambda < : Int -> Bool = i -> self - i < 0
+	lambda <= : Int -> Bool = i -> self - i <= 0;
+	lambda > : Int -> Bool = i -> i < self;
+	lambda >= : Int -> Bool = i -> i <= self;
 	
 	lambda toFloat : Float;
 	lambda parseInt : String -> Int;
