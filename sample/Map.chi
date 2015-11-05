@@ -1,19 +1,19 @@
 
-struct _Set[T] : (ss : T...) {
+struct Set[T] : (ss : T...) {
 	lambda contains : T -> Bool;
 	lambda size : Int;
 	lambda forEach : (T); 
-	lambda map[E] : (T -> E) -> _Set[E];
-	lambda filter : (T -> Bool) -> _Set[E];
+	lambda map[E] : (T -> E) -> Set[E];
+	lambda filter : (T -> Bool) -> Set[E];
 	lambda reduce[E] : (E, (E, T) -> E) -> E;
 }
 
 native struct Map[K, V] : (ps : _pair[K, V]...) {
 	lambda get[T] : (K, (K, V) -> T, K -> T) -> T;
 	lambda size : Int;
-	lambda keySet : _Set[K];
+	lambda keySet : Set[K];
 	lambda values : Array[V];
-	lambda pairSet : _Set[_pair[K, V]];
+	lambda pairSet : Set[_pair[K, V]];
 	lambda forEach : ((K, V)) = f -> pairSet.forEach(p -> f(p.o1, p.o2));
 }
 
