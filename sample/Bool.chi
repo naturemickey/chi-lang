@@ -1,0 +1,15 @@
+
+native struct Bool {
+	lambda && : Bool -> Bool = b -> case self {
+		when true : b;
+		when false : false;
+	};
+	lambda || : Bool -> Bool = b -> case self {
+		when true : true;
+		when false : b;
+	};
+	lambda not : Bool = case self {
+		when true: false;
+		when false : true;
+	};
+}
