@@ -4,13 +4,30 @@
 // parser
 // -------------------------------
 
+ChiFile : Import* (StructDeclare | ValueDeclare | LambdaDeclare | ActorDeclare | EnumDeclare)*
+Import : ;
 
+StructDeclare : NATIVE? STRUCT TypeName LBBT StructBody RBBT;
+StructBody : (SValueDecl | SLambdaDecl | SActorDecl)* ;
+SValueDecl : VAL ID ':' TypeName (('=' | DEFAULT) (Value | Exp))?;
+SLambdaDecl : ;
+SActorDecl : ;
+
+ValueDeclare : ;
+LambdaDeclare : ;
+ActorDeclare : ;
+EnumDeclare : ;
+
+TypeName : ID ;
+Value : ;
+Exp : ;
 
 // -------------------------------
 // lexer
 // -------------------------------
 NATIVE : 'native' ;
 STRUCT : 'struct' ;
+VAL : 'val' ;
 LAMBDA : 'lambda' ;
 ACTOR : 'actor' ;
 ACTORS : 'actors' ;
@@ -18,6 +35,8 @@ CASE : 'case' ;
 WHEN : 'when' ;
 SELF : 'self' ;
 ENUM : 'enum' ;
+IMPORT : 'import' ;
+DEFAULT : 'default' ;
 ARROW : '->' ;
 BLANK : [\n\r\t ] ;
 ASSIGNMENT : '=' ;
