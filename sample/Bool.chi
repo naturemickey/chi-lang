@@ -13,3 +13,5 @@ native struct Bool {
 		when false : true;
 	};
 }
+native lambda true : Bool;
+native lambda false : Bool;

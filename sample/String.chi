@@ -6,6 +6,9 @@ native struct Char {
 native struct String {
 	lambda charArray : Array[Char];
 }
+
 lambda concatStr : (String...) -> String = ss -> join(ss, "");
-native lambda carToString : (Car...) -> String;
-native lambda joinStr : (String..., String) -> String; // 未实现
+
+native lambda carToString : (Char...) -> String;
+
+lambda joinStr : (String..., String) -> String; // 未实现

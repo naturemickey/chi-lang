@@ -1,0 +1,39 @@
+// parser与lexer纯手工实现，以下表示仅供参考。
+
+// -------------------------------
+// parser
+// -------------------------------
+
+
+
+// -------------------------------
+// lexer
+// -------------------------------
+NATIVE : 'native' ;
+STRUCT : 'struct' ;
+LAMBDA : 'lambda' ;
+ACTOR : 'actor' ;
+ACTORS : 'actors' ;
+CASE : 'case' ;
+WHEN : 'when' ;
+SELF : 'self' ;
+ENUM : 'enum' ;
+ARROW : '->' ;
+BLANK : [\n\r\t ] ;
+ASSIGNMENT : '=' ;
+EQUALS : '==' ;
+LBT : '(' ;
+RBT : ')' ;
+LSBT : '[' ;
+RSBT : ']' ;
+LBBT : '{' ;
+RBBT : '}' ;
+COLON : ':' ;
+COMMA : ',' ;
+DOT : '.' ;
+SEMI : ';' ;
+AT : '@' ;
+ELLIPSIS : '...' ;
+CHAR : '\'' 除单引号之外的任意单个字符或一个转义字符 '\''
+STRING : '"' 除换行和双引号之外的所有字符或转义字符(可以有多个) '"' ;
+ID : [^;'",.@=()\[\]{}\s]+ 并且不是上面的其它关键字 并且如果有冒号则只能在开头 ;

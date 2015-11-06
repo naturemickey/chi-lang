@@ -1,0 +1,14 @@
+
+native struct _StdIn {
+	lambda in : (String);
+}
+native struct _StdOut {
+	lambda out : String;
+}
+val stdin : _StdIn = _StdIn();
+val stdout : _StdOut = _StdOut();
+
+lambda print : (String) = s -> stdin.in(s);
+lambda println : (String) = s -> {
+	stdin.in(s);stdin.in('\n');
+}
