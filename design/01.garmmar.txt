@@ -7,7 +7,7 @@ ChiFile : Import* (StructDeclare | ValueDeclare | LambdaDeclare | ActorDeclare |
 Import : IMPORT Path;
 Path : ID ('/' ID)*
 
-StructDeclare : NATIVE? STRUCT TypeName GenericsParams? (':' StructParams) '{' StructBody '}';
+StructDeclare : NATIVE? STRUCT ID GenericsParams? (':' StructParams) '{' StructBody '}';
 StructParams : '(' StructParam (',' StructParam)* ')' ;
 StructParam : ID ':' TypeName ;
 StructBody : (SValueDecl | SLambdaDecl | SActorDecl)* ;
@@ -34,14 +34,22 @@ LambdaDeclare : Annotations? NATIVE? LAMBDA ID GenericsParams? (':' LambdaType)?
 ActorDeclare : (ACTOR | ACTORS) ID (':' LambdaType)? '=' Lambda ;
 EnumDeclare : ENUM ID '{' ID (',' ID)* '}' ;
 
-TypeName : ID | ('[' ID (',' ID)* ']') | (TypeName '...' ) ;
+TypeName : ID | ('[' ID (',' ID)* ']') | (TypeName '...' ) ; // 只有在做为参数时才可以用...的形式。
 ValName : ID ;
-ValueExp : ValName | IntValue | FloatValue | FieldCall | FunCall | CaseExp;
+ValueExp : ValName | IntValue | FloatValue | BoolValue | FieldCall | FunCall | CaseExp;
 FunCall : (ID | FieldCall) ('(' ValueExp (',' ValueExp)* ')')?;
 FieldCall : (ID | FieldCall) '.'? ID;
 IntValue : INT;
 FloatValue : FLOAT;
-CaseExp : ;
+BoolValue : TRUE | FALSE ;
+CaseExp : CaseValueWhenExp | CaseWhenBoolExp ;
+CaseValueWhenExp : CASE ValName '{' CVWhen+ CElse '}'; // 如果ValName是Enum或Bool类型的，则不需要else部分，否则就一定要。 
+CVWhen : WHEN ValueExp ':' LambdaBody ; // 这里的LambdaBody可以没有{}，
+										// 同时alueExp只能是立即数（直接写在代码中的值，且是Int/Float/Bool/Char/String/enum之中的） 
+										// 且所有的when后面的类型得是同一个类型的。
+CaseWhenBoolExp : CASE '{' BoolWhen+ CElse '}';
+BoolWhen : CVWhen ; // 这里BoolWhen和CVWhen的形式差不多，但when后面一定是一个Bool值，或运算结果是一个Bool值。
+CElse : ELSE ':' LambdaBody ;
 
 // -------------------------------
 // lexer
@@ -58,10 +66,13 @@ ACTOR : 'actor' ;
 ACTORS : 'actors' ;
 CASE : 'case' ;
 WHEN : 'when' ;
+ELSE : 'else' ;
 SELF : 'self' ;
 ENUM : 'enum' ;
 IMPORT : 'import' ;
 DEFAULT : 'default' ;
+TRUE : 'true' ;
+FALSE : 'false' ;
 ARROW : '->' ;
 BLANK : [\n\r\t ] ;
 ASSIGNMENT : '=' ;
