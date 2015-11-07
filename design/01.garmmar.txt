@@ -7,7 +7,9 @@ ChiFile : Import* (StructDeclare | ValueDeclare | LambdaDeclare | ActorDeclare |
 Import : IMPORT Path;
 Path : ID ('/' ID)*
 
-StructDeclare : NATIVE? STRUCT TypeName GenericsParams? '{' StructBody '}';
+StructDeclare : NATIVE? STRUCT TypeName GenericsParams? (':' StructParams) '{' StructBody '}';
+StructParams : '(' StructParam (',' StructParam)* ')' ;
+StructParam : ID ':' TypeName ;
 StructBody : (SValueDecl | SLambdaDecl | SActorDecl)* ;
 SValueDecl : VAL ValName ((':' TypeName) | (('=' | DEFAULT) ValueExp));
 SLambdaDecl : Annotations? LAMBDA ID GenericsParams? (':' LambdaType)? (('=' | DEFAULT) Lambda)? ;
@@ -32,20 +34,22 @@ LambdaDeclare : Annotations? NATIVE? LAMBDA ID GenericsParams? (':' LambdaType)?
 ActorDeclare : (ACTOR | ACTORS) ID (':' LambdaType)? '=' Lambda ;
 EnumDeclare : ENUM ID '{' ID (',' ID)* '}' ;
 
-TypeName : ID | ('[' ID (',' ID)* ']') ;
+TypeName : ID | ('[' ID (',' ID)* ']') | (TypeName '...' ) ;
 ValName : ID ;
 ValueExp : ValName | IntValue | FloatValue | FieldCall | FunCall | CaseExp;
 FunCall : (ID | FieldCall) ('(' ValueExp (',' ValueExp)* ')')?;
 FieldCall : (ID | FieldCall) '.'? ID;
-IntValue : ;
-FloatValue : ;
+IntValue : INT;
+FloatValue : FLOAT;
 CaseExp : ;
 
 // -------------------------------
 // lexer
 // -------------------------------
-INT : ;
-FLOAT : ;
+INT : (+|-)? ((0[0-7]*) | (0('x'|'X')[0-9a-zA-Z]+) | ([1-9][0-9]*));
+FLOAT : (+|-)? (\d+)? '.'? (\d+)? (('e'|'E') (+|-)? \d+)?; // 前面的数字部分不可以同时省略 
+CHAR : '\'' 除换行和单引号之外的所有字符或转义字符 '\''
+STRING : '"' 除换行和双引号之外的所有字符或转义字符(可以有多个) '"' ;
 NATIVE : 'native' ;
 STRUCT : 'struct' ;
 VAL : 'val' ;
@@ -74,6 +78,4 @@ DOT : '.' ;
 SEMI : ';' ;
 AT : '@' ;
 ELLIPSIS : '...' ;
-CHAR : '\'' 除单引号之外的任意单个字符或一个转义字符 '\''
-STRING : '"' 除换行和双引号之外的所有字符或转义字符(可以有多个) '"' ;
-ID : [^;'",.@=()\[\]{}\s]+ 并且不是上面的其它关键字 并且如果有冒号则只能在开头 ;
+ID : [^;'",.@=()\[\]{}\s]+ 并且不是上面的其它关键字，并且如果有冒号则只能在开头，并且如果有数字则不能在开头;
