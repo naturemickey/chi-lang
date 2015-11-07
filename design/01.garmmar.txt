@@ -10,35 +10,42 @@ Path : ID ('/' ID)*
 StructDeclare : NATIVE? STRUCT TypeName GenericsParams? '{' StructBody '}';
 StructBody : (SValueDecl | SLambdaDecl | SActorDecl)* ;
 SValueDecl : VAL ValName ((':' TypeName) | (('=' | DEFAULT) ValueExp));
-SLambdaDecl : LAMBDA ID GenericsParams? ':' LambdaType (('=' | DEFAULT) Lambda)? ;
-SActorDecl : ; (ACTOR | ACTORS) ID ':' LambdaType (('=' | DEFAULT) Lambda)? ;
+SLambdaDecl : Annotations? LAMBDA ID GenericsParams? (':' LambdaType)? (('=' | DEFAULT) Lambda)? ;
+SActorDecl : (ACTOR | ACTORS) ID (':' LambdaType)? (('=' | DEFAULT) Lambda)? ;
 
 GenericsParams : '[' ID (',' ID)* ']' ;
 
 LambdaType : (LambdaTypeReturn | (LambdaTypeParams ('->' LambdaTypeReturn)?);
-LambdaTypeParams : TypeName  | ('(' LambdaTypeParam (',' LambdaTypeParam)* ')');
+LambdaTypeParams : TypeName  | ('(' LambdaTypeParam (',' LambdaTypeParam)* ')') | '()';
 LambdaTypeParam : TypeName | LambdaType ;
 LambdaTypeReturn : TypeName | LambdaType ;
-Lambd : Annotations? (LambdaParams '->')? LambdaBody;
-LambdaParams : ID | ('(' ')');
+Lambda : (LambdaParams '->')? LambdaBody;
+LambdaParams : ID | ('(' ID (',' ID)* ')') | '()';
 LambdaBody : ValueExp | ('{' Statements'}');
 Annotations : ('@' ID)+;
 
 Statements : Statement+ ;
-Statement : ;
+Statement : ValueDeclare | LambdaDeclare | ActorDeclare | ValueExp;
 
-ValueDeclare : VAL ValName '=' ValueExp;
-LambdaDeclare : ;
-ActorDeclare : ;
-EnumDeclare : ;
+ValueDeclare : VAL ValName '=' ValueExp ;
+LambdaDeclare : Annotations? NATIVE? LAMBDA ID GenericsParams? (':' LambdaType)? '=' Lambda ;
+ActorDeclare : (ACTOR | ACTORS) ID (':' LambdaType)? '=' Lambda ;
+EnumDeclare : ENUM ID '{' ID (',' ID)* '}' ;
 
-TypeName : ID ;
+TypeName : ID | ('[' ID (',' ID)* ']') ;
 ValName : ID ;
-ValueExp : ;
+ValueExp : ValName | IntValue | FloatValue | FieldCall | FunCall | CaseExp;
+FunCall : (ID | FieldCall) ('(' ValueExp (',' ValueExp)* ')')?;
+FieldCall : (ID | FieldCall) '.'? ID;
+IntValue : ;
+FloatValue : ;
+CaseExp : ;
 
 // -------------------------------
 // lexer
 // -------------------------------
+INT : ;
+FLOAT : ;
 NATIVE : 'native' ;
 STRUCT : 'struct' ;
 VAL : 'val' ;
