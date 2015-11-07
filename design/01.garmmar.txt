@@ -1,26 +1,40 @@
-// parser与lexer纯手工实现，以下表示仅供参考。
+// parser与lexer纯手工实现，以下表示仅供参考，而不用于任何语法分析器的生成器。
 
 // -------------------------------
 // parser
 // -------------------------------
-
 ChiFile : Import* (StructDeclare | ValueDeclare | LambdaDeclare | ActorDeclare | EnumDeclare)*
-Import : ;
+Import : IMPORT Path;
+Path : ID ('/' ID)*
 
-StructDeclare : NATIVE? STRUCT TypeName LBBT StructBody RBBT;
+StructDeclare : NATIVE? STRUCT TypeName GenericsParams? '{' StructBody '}';
 StructBody : (SValueDecl | SLambdaDecl | SActorDecl)* ;
-SValueDecl : VAL ID ':' TypeName (('=' | DEFAULT) (Value | Exp))?;
-SLambdaDecl : ;
-SActorDecl : ;
+SValueDecl : VAL ValName ((':' TypeName) | (('=' | DEFAULT) ValueExp));
+SLambdaDecl : LAMBDA ID GenericsParams? ':' LambdaType (('=' | DEFAULT) Lambda)? ;
+SActorDecl : ; (ACTOR | ACTORS) ID ':' LambdaType (('=' | DEFAULT) Lambda)? ;
 
-ValueDeclare : ;
+GenericsParams : '[' ID (',' ID)* ']' ;
+
+LambdaType : (LambdaTypeReturn | (LambdaTypeParams ('->' LambdaTypeReturn)?);
+LambdaTypeParams : TypeName  | ('(' LambdaTypeParam (',' LambdaTypeParam)* ')');
+LambdaTypeParam : TypeName | LambdaType ;
+LambdaTypeReturn : TypeName | LambdaType ;
+Lambd : Annotations? (LambdaParams '->')? LambdaBody;
+LambdaParams : ID | ('(' ')');
+LambdaBody : ValueExp | ('{' Statements'}');
+Annotations : ('@' ID)+;
+
+Statements : Statement+ ;
+Statement : ;
+
+ValueDeclare : VAL ValName '=' ValueExp;
 LambdaDeclare : ;
 ActorDeclare : ;
 EnumDeclare : ;
 
 TypeName : ID ;
-Value : ;
-Exp : ;
+ValName : ID ;
+ValueExp : ;
 
 // -------------------------------
 // lexer
