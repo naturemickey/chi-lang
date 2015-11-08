@@ -5,16 +5,17 @@
  *      Author: Mickey
  */
 
-#ifndef CHIREF_H_
-#define CHIREF_H_
+#ifndef OBJREF_H_
+#define OBJREF_H_
 
 #include <memory>
 
-class ChiRef {
+class ObjRef {
 	std::shared_ptr<void> p;
 public:
-	ChiRef(void * pi);
-	virtual ~ChiRef();
+	template<typename T>
+	ObjRef(T * pi);
+	virtual ~ObjRef();
 };
 
-#endif /* CHIREF_H_ */
+#endif /* OBJREF_H_ */
