@@ -8,7 +8,9 @@
 #ifndef CHIBOOL_H_
 #define CHIBOOL_H_
 
-class ChiBool {
+#include "ChiObj.h"
+
+class ChiBool: public ChiObj {
 	bool _b;
 public:
 	ChiBool();

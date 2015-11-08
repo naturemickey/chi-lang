@@ -8,7 +8,9 @@
 #ifndef CHISTRING_H_
 #define CHISTRING_H_
 
-class ChiString {
+#include "ChiObj.h"
+
+class ChiString: public ChiObj {
 public:
 	ChiString();
 	virtual ~ChiString();

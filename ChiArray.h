@@ -10,8 +10,9 @@
 
 #include <vector>
 #include <memory>
+#include "ChiObj.h"
 
-class ChiArray {
+class ChiArray: public ChiObj {
 	std::vector<std::shared_ptr<void>> p;
 public:
 	ChiArray();

@@ -8,9 +8,9 @@
 #ifndef CHISET_H_
 #define CHISET_H_
 
-#include <hash_map>
+#include "ChiObj.h"
 
-class ChiSet {
+class ChiSet: public ChiObj {
 public:
 	ChiSet();
 	virtual ~ChiSet();

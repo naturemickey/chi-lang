@@ -8,9 +8,9 @@
 #ifndef CHIMAP_H_
 #define CHIMAP_H_
 
-#include <hash_map>
+#include "ChiObj.h"
 
-class ChiMap {
+class ChiMap: public ChiObj {
 public:
 	ChiMap();
 	virtual ~ChiMap();

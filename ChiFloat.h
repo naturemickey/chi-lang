@@ -8,7 +8,9 @@
 #ifndef CHIFLOAT_H_
 #define CHIFLOAT_H_
 
-class ChiFloat {
+#include "ChiObj.h"
+
+class ChiFloat: public ChiObj {
 public:
 	ChiFloat();
 	virtual ~ChiFloat();
