@@ -5,17 +5,17 @@
  *      Author: Mickey
  */
 
-#ifndef ARRAY_H_
-#define ARRAY_H_
+#ifndef CHIARRAY_H_
+#define CHIARRAY_H_
 
 #include <vector>
 #include <memory>
 
-class Array {
+class ChiArray {
 	std::vector<std::shared_ptr<void>> p;
 public:
-	Array();
-	virtual ~Array();
+	ChiArray();
+	virtual ~ChiArray();
 };
 
-#endif /* ARRAY_H_ */
+#endif /* CHIARRAY_H_ */

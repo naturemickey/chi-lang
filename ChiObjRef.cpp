@@ -5,11 +5,11 @@
  *      Author: Mickey
  */
 
-#include "ObjRef.h"
+#include "ChiObjRef.h"
 
 template<typename T>
-ObjRef::ObjRef(T * pi) : p(pi) {
+ChiObjRef::ChiObjRef(T * pi) : p(pi) {
 }
 
-ObjRef::~ObjRef() {
+ChiObjRef::~ChiObjRef() {
 }

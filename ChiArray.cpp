@@ -5,11 +5,11 @@
  *      Author: Mickey
  */
 
-#include "Array.h"
+#include "ChiArray.h"
 
-Array::Array() {
+ChiArray::ChiArray() {
 }
 
-Array::~Array() {
+ChiArray::~ChiArray() {
 }
 

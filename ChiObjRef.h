@@ -5,17 +5,17 @@
  *      Author: Mickey
  */
 
-#ifndef OBJREF_H_
-#define OBJREF_H_
+#ifndef CHIOBJREF_H_
+#define CHIOBJREF_H_
 
 #include <memory>
 
-class ObjRef {
+class ChiObjRef {
 	std::shared_ptr<void> p;
 public:
 	template<typename T>
-	ObjRef(T * pi);
-	virtual ~ObjRef();
+	ChiObjRef(T * pi);
+	virtual ~ChiObjRef();
 };
 
-#endif /* OBJREF_H_ */
+#endif /* CHIOBJREF_H_ */
