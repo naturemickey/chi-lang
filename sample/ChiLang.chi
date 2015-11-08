@@ -12,3 +12,4 @@ lambda print : (String) = s -> stdin.in(s);
 lambda println : (String) = s -> {
 	stdin.in(s);stdin.in('\n');
 }
+native lambda error : (String);

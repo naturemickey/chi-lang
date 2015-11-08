@@ -5,11 +5,11 @@
  *      Author: Mickey
  */
 
-#include "ArrayRef.h"
+#include "Array.h"
 
-ArrayRef::ArrayRef() {
+Array::Array() {
 }
 
-ArrayRef::~ArrayRef() {
+Array::~Array() {
 }
 

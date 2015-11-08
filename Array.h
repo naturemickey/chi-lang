@@ -5,17 +5,17 @@
  *      Author: Mickey
  */
 
-#ifndef ARRAYREF_H_
-#define ARRAYREF_H_
+#ifndef ARRAY_H_
+#define ARRAY_H_
 
 #include <vector>
 #include <memory>
 
-class ArrayRef {
+class Array {
 	std::vector<std::shared_ptr<void>> p;
 public:
-	ArrayRef();
-	virtual ~ArrayRef();
+	Array();
+	virtual ~Array();
 };
 
-#endif /* ARRAYREF_H_ */
+#endif /* ARRAY_H_ */
