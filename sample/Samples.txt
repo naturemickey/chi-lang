@@ -11,3 +11,6 @@ lambda _fibonacci : (Int, Int, Int, Int) -> Int = (f1v, f2v, i, finishI) -> case
 		else : f2v;
 	}
 }
+
+val _dx = 0.0000001;
+lambda differential : ((Float) -> Float) -> (Float) -> Float = f -> x -> (f(x + dx) - f(x)) / dx;
