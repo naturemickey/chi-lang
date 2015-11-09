@@ -1,0 +1,13 @@
+lambda fibonacci : Int -> Int = i -> case {
+	when i < 0 : error('i cannot < 0.');
+	else : _fibonacci(1, 1, 2, i);
+}
+
+lambda _fibonacci : (Int, Int, Int, Int) -> Int = (f1v, f2v, i, finishI) -> case i {
+	when 0 : 1 ;
+	when 1 : 1 ;
+	else : case {
+		when i < finishI :  _fibonacci(f2v, f1v + f2v, i + 1, finishI);
+		else : f2v;
+	}
+}

@@ -44,9 +44,9 @@ FloatValue : FLOAT;
 BoolValue : TRUE | FALSE ;
 CaseExp : CaseValueWhenExp | CaseWhenBoolExp ;
 CaseValueWhenExp : CASE ValName '{' CVWhen+ CElse '}'; // 如果ValName是Enum或Bool类型的，则不需要else部分，否则就一定要。 
-CVWhen : WHEN ValueExp ':' LambdaBody ; // 这里的LambdaBody可以没有{}，
-										// 同时alueExp只能是立即数（直接写在代码中的值，且是Int/Float/Bool/Char/String/enum之中的） 
-										// 且所有的when(包括else)后面的类型得是同一个类型的。
+CVWhen : WHEN ValueExp LambdaBody ; // 这里的LambdaBody可以没有{}，
+									// 同时alueExp只能是立即数（直接写在代码中的值，且是Int/Float/Bool/Char/String/enum之中的） 
+									// 且所有的when(包括else)后面的类型得是同一个类型的。
 CaseWhenBoolExp : CASE '{' BoolWhen+ CElse '}';
 BoolWhen : CVWhen ; // 这里BoolWhen和CVWhen的形式差不多，但when后面一定是一个Bool值，或运算结果是一个Bool值。
 CElse : ELSE ':' LambdaBody ;
