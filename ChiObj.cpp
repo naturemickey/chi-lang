@@ -8,11 +8,11 @@
 #include "ChiObj.h"
 
 ChiObj::ChiObj() {
-	// TODO Auto-generated constructor stub
-
 }
 
 ChiObj::~ChiObj() {
-	// TODO Auto-generated destructor stub
 }
 
+int ChiObj::hashCode() {
+	return 0;
+}

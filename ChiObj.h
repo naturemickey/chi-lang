@@ -12,6 +12,7 @@ class ChiObj {
 public:
 	ChiObj();
 	virtual ~ChiObj();
+	virtual int hashCode();
 };
 
 #endif /* CHIOBJ_H_ */

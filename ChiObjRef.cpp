@@ -7,8 +7,7 @@
 
 #include "ChiObjRef.h"
 
-template<typename T>
-ChiObjRef::ChiObjRef(T * pi) : p(pi) {
+ChiObjRef::ChiObjRef(const ChiObj * pi) : p(pi) {
 }
 
 ChiObjRef::~ChiObjRef() {

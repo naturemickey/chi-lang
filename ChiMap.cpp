@@ -8,11 +8,8 @@
 #include "ChiMap.h"
 
 ChiMap::ChiMap() {
-	// TODO Auto-generated constructor stub
-
 }
 
 ChiMap::~ChiMap() {
-	// TODO Auto-generated destructor stub
 }
 

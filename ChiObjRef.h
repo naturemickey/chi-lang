@@ -9,12 +9,12 @@
 #define CHIOBJREF_H_
 
 #include <memory>
+#include "ChiObj.h"
 
 class ChiObjRef {
-	std::shared_ptr<void> p;
+	std::shared_ptr<const ChiObj> p;
 public:
-	template<typename T>
-	ChiObjRef(T * pi);
+	ChiObjRef(const ChiObj * pi);
 	virtual ~ChiObjRef();
 };
 
