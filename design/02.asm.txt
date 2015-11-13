@@ -1,7 +1,8 @@
-new_params_l    $length     ;
-new_params                  ;
-add_param       $ref        ;
-add_param_array $ref_array  ;
-call            $fun_name   ;
-push            $register   ;
-pop             $register   ;
+new_params_l         $length     ;
+new_params                       ;
+add_param_local      $ref_idx    ;
+add_param_local      $ref_idx    ;
+add_param_array      $ref        ; 这里的$ref必须是一个array
+call                 $fun_name   ;
+push                 $reg        ;
+pop                  $reg        ;
