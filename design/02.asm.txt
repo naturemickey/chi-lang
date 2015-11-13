@@ -3,3 +3,5 @@ new_params                  ;
 add_param       $ref        ;
 add_param_array $ref_array  ;
 call            $fun_name   ;
+push            $register   ;
+pop             $register   ;
