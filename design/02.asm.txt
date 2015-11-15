@@ -1,8 +1,11 @@
-new_params_l         $length     ;
-new_params                       ;
-add_param_local      $ref_idx    ;
-add_param_local      $ref_idx    ;
-add_param_array      $ref        ; 这里的$ref必须是一个array
-call                 $fun_name   ;
-push                 $reg        ;
-pop                  $reg        ;
+new_params_l           $length     ;
+new_params                         ;
+add_param_local        $ref_idx    ;
+add_param_param        $ref_idx    ;
+add_param_array_local  $ref_idx    ; 这里的$ref必须是一个array
+add_param_array_param  $ref_idx    ; 这里的$ref必须是一个array
+call                   $fun_name   ; 加载后在内存中把fun_name换成引用
+push_local             $ref_idx    ; 把本地值空间中的一个引用压入栈顶
+push_param             $ref_idx    ; 把当前lambda的参数压入栈顶
+pop_local              $ref_idx    ;
+pop_param              $ref_idx    ;
