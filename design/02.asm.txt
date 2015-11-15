@@ -1,10 +1,11 @@
-new_params_l           $length     ; 创建一个新的参数空间（为下一次的lambda调用），length是空间在初始大小
-new_params                         ; 创建一个新的参数空间（为下一次的lambda调用），不指定初始大小，由VM自动给初始值
+new_params_l           $length     ; 创建一个新的参数空间（为下一次的lambda调用），length是空间在初始大小。创建好的参数引用放在栈顶。
+new_params                         ; 创建一个新的参数空间（为下一次的lambda调用），不指定初始大小，由VM自动给初始值。创建好的参数引用放在栈顶。
 add_param                          ; 把栈顶的引用加入新参数（新参数此时应该在栈的顶之下的第一个引用）
-add_param_array                    ; 把栈顶的数组的每个引用做为新参数的多个参数。
-call                               ; 呼叫当前栈顶的lambda引用
+add_param_array                    ; 把栈顶的数组的每个引用做为新参数的多个参数
+call                               ; 呼叫当前栈顶的lambda引用，如果此lambda存在返回值，则调用完成之后栈顶是返回结果
 push_local             $ref_idx    ; 把本地值空间中的一个引用压入栈顶
 push_param             $ref_idx    ; 把当前lambda的参数压入栈顶
+push_fun               $fun_name   ; 把一个lambda引用压到栈顶（在文本中的fun_name需要在连接时转成引用）
 pop_local              $ref_idx    ; 把栈顶的引用放入本地值的某个位置
 pop_param              $ref_idx    ; 把栈顶的引用放入参数的某个位置
 access_field           $idx        ; 弹出当前栈顶的结构对象，并把它的第idx个属性放到栈顶
