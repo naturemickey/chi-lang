@@ -1,3 +1,4 @@
 param_register     : 当前线程准备调用lambda时的参数寄存器(如果是一个结构的lambda调用，则把self放到这里的第一个参数)
 local_register     : 当前lambda所使用的本地值空间
 stack              : 当前线程栈(push/pop)
+context            : 文本段——所有lambda在这个段内。
