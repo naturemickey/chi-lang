@@ -2,4 +2,4 @@ param_register     : 当前线程准备调用lambda时的参数寄存器(如果�
 local_register     : 当前lambda所使用的本地值空间
 stack              : 当前线程栈(push/pop)
 context            : 文本段——所有lambda在这个段内。
-static_data         : 静态数据段（编译时可见的数据全部在这里）
+static_data        : 静态数据段（编译时可见的数据全部在这里）
