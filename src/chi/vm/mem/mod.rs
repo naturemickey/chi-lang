@@ -1,6 +1,8 @@
 
 use std::collections::HashMap;
 
+pub type Chunk = Vec<i64>;
+
 pub struct Context {
-    lambda_map:HashMap<String, Vec<i64>>
+    lambda_map:HashMap<String, Chunk>
 }
