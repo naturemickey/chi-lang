@@ -1,3 +1,6 @@
+pub mod alu;
+
+const FFFFFFFF : i64 = 0xFFFFFFFF;
 
 const ADD : i64 = 1;
 const SUB : i64 = 2;
