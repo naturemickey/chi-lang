@@ -1,6 +1,5 @@
 use chi::vm::cpu::*;
-use chi::vm::mem::Chunk;
-use chi::vm::mem::Stack;
+use chi::vm::mem::*;
 
 pub fn execute(stack:&mut Stack, lambda:&Box<Chunk>, sp:&mut usize) {
     let command = lambda[*sp];
@@ -29,22 +28,22 @@ pub fn execute(stack:&mut Stack, lambda:&Box<Chunk>, sp:&mut usize) {
         F_ADD => {
             let a = stack.pop() as f64;
             let b = stack.pop() as f64;
-            stack.push(a + b);
+            stack.push((a + b) as i64);
         }
         F_SUB => {
             let a = stack.pop() as f64;
             let b = stack.pop() as f64;
-            stack.push(b - a);
+            stack.push((b - a) as i64);
         }
         F_MUT => {
             let a = stack.pop() as f64;
             let b = stack.pop() as f64;
-            stack.push(a * b);
+            stack.push((a * b) as i64);
         }
         F_DIV => {
             let a = stack.pop() as f64;
             let b = stack.pop() as f64;
-            stack.push(b / a);
+            stack.push((b / a) as i64);
         }
         STORE => {
             stack.push(lambda[*sp]);
