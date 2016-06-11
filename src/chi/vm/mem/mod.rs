@@ -15,4 +15,15 @@ impl Stack {
     pub fn new() -> Stack {
         Stack {data : Vec::new()}
     }
+    pub fn push(&mut self, v:i64) {
+        self.data.push(v)
+    }
+    pub fn pop(&mut self) -> i64 {
+        let len = self.data.len();
+        self.data.remove(len - 1)
+    }
+    pub fn top(&mut self) -> i64 {
+        let len = self.data.len();
+        self.data[len - 1]
+    }
 }

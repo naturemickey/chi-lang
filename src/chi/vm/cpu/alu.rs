@@ -2,23 +2,74 @@ use chi::vm::cpu::*;
 use chi::vm::mem::Chunk;
 use chi::vm::mem::Stack;
 
-pub fn execute(stack:&Stack, lambda:&Box<Chunk>, sp:&usize) {
-    let a = lambda[*sp];
-    match (a & FFFFFFFF) {
-        ADD => {
-            
+pub fn execute(stack:&mut Stack, lambda:&Box<Chunk>, sp:&mut usize) {
+    let command = lambda[*sp];
+    *sp += 1;
+    match command & FFFFFFFF {
+        I_ADD => {
+            let a = stack.pop();
+            let b = stack.pop();
+            stack.push(a + b);
         }
-        SUB => {
-            
+        I_SUB => {
+            let a = stack.pop();
+            let b = stack.pop();
+            stack.push(b - a);
         }
-        MUT => {
-            
+        I_MUT => {
+            let a = stack.pop();
+            let b = stack.pop();
+            stack.push(a * b);
         }
-        DIV => {
-            
+        I_DIV => {
+            let a = stack.pop();
+            let b = stack.pop();
+            stack.push(b / a);
+        }
+        F_ADD => {
+            let a = stack.pop() as f64;
+            let b = stack.pop() as f64;
+            stack.push(a + b);
+        }
+        F_SUB => {
+            let a = stack.pop() as f64;
+            let b = stack.pop() as f64;
+            stack.push(b - a);
+        }
+        F_MUT => {
+            let a = stack.pop() as f64;
+            let b = stack.pop() as f64;
+            stack.push(a * b);
+        }
+        F_DIV => {
+            let a = stack.pop() as f64;
+            let b = stack.pop() as f64;
+            stack.push(b / a);
+        }
+        STORE => {
+            stack.push(lambda[*sp]);
+            *sp += 1;
+        }
+        JUMP_IF_IS_ZERO => {
+            let a = stack.pop();
+            if a == 0 {
+                *sp = (command >> 32) as usize;
+            }
+        }
+        JUMP_IF_LESS_THEN_ZERO => {
+            let a = stack.pop();
+            if a < 0 {
+                *sp = (command >> 32) as usize;
+            }
+        }
+        JUMP_IF_LESS_OR_EQ_ZERO => {
+            let a = stack.pop();
+            if a <= 0 {
+                *sp = (command >> 32) as usize;
+            }
         }
         _ => {
-            
+            panic!("指令错误:{}", command);
         }
     }
 }
