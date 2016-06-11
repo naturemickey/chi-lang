@@ -8,12 +8,12 @@ pub struct Context {
 }
 
 pub struct Stack {
-    data:Vec<i64>
+    data:Chunk
 }
 
 impl Stack {
     pub fn new() -> Stack {
-        Stack {data : Vec::new()}
+        Stack {data : Chunk::new()}
     }
     pub fn push(&mut self, v:i64) {
         self.data.push(v)
