@@ -22,8 +22,11 @@ impl Stack {
         let len = self.data.len();
         self.data.remove(len - 1)
     }
-    pub fn top(&mut self) -> i64 {
+    pub fn top(&self) -> i64 {
         let len = self.data.len();
         self.data[len - 1]
+    }
+    pub fn deep(&self) -> usize {
+        self.data.len()
     }
 }
