@@ -30,3 +30,26 @@ impl Stack {
         self.data.len()
     }
 }
+
+struct val_stack {
+    data:Vec<Chunk>
+}
+
+impl val_stack {
+    pub fn new() -> val_stack {
+        val_stack {data : Vec::new()}
+    }
+    pub fn prepare_call(&mut self, capacity:usize) {
+        self.data.push(Chunk::with_capacity(capacity));
+    }
+    pub fn get(&self, idx:usize) -> i64 {
+        let len = self.data.len();
+        let lastChunk = &self.data[len - 1];
+        lastChunk[idx]
+    }
+    pub fn set(&mut self, idx:usize, v:i64) {
+        let len = self.data.len();
+        let mut lastChunk = &mut self.data[len - 1];
+        lastChunk[idx] = v;
+    }
+}
