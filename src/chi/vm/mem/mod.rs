@@ -40,7 +40,7 @@ impl val_stack {
         val_stack {data : Vec::new()}
     }
     pub fn prepare_call(&mut self, capacity:usize) {
-        self.data.push(Chunk::with_capacity(capacity));
+        self.data.push(vec![0; capacity]);
     }
     pub fn get(&self, idx:usize) -> i64 {
         let len = self.data.len();
@@ -51,5 +51,9 @@ impl val_stack {
         let len = self.data.len();
         let mut lastChunk = &mut self.data[len - 1];
         lastChunk[idx] = v;
+    }
+    pub fn before_return(&mut self) {
+        let len = self.data.len();
+        self.data.remove(len);
     }
 }
