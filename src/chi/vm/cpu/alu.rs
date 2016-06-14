@@ -1,15 +1,16 @@
 use chi::vm::cpu::*;
 use chi::vm::mem::*;
 
-pub fn execute(stack:&mut Stack, lambda:&Box<Chunk>) {
+pub fn execute(mem:&mut ThreadMem, lambda:&Box<Chunk>) {
     let mut sp: usize = 0;
     let len = lambda.len();
     while sp < len {
-        execute_prv(stack, lambda, &mut sp)
+        execute_prv(mem, lambda, &mut sp)
     }
 }
 
-fn execute_prv(stack:&mut Stack, lambda:&Box<Chunk>, sp:&mut usize) {
+fn execute_prv(mem:&mut ThreadMem, lambda:&Box<Chunk>, sp:&mut usize) {
+    let mut stack = &mut mem.stack;
     let command = lambda[*sp];
     *sp += 1;
     match command & FFFFFFFF {

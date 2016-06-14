@@ -31,7 +31,7 @@ impl Stack {
     }
 }
 
-struct Val_stack {
+pub struct Val_stack {
     data:Vec<Chunk>
 }
 
@@ -59,8 +59,8 @@ impl Val_stack {
 }
 
 pub struct ThreadMem {
-    stack: Stack,
-    val_s: Val_stack
+    pub stack: Stack,
+    pub val_s: Val_stack
 }
 
 impl ThreadMem {
