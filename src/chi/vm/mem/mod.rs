@@ -7,13 +7,13 @@ pub struct Context {
     lambda_map:HashMap<String, Box<Chunk>>
 }
 
-pub struct Stack {
+pub struct Data_stack {
     data:Chunk
 }
 
-impl Stack {
-    pub fn new() -> Stack {
-        Stack {data : Chunk::new()}
+impl Data_stack {
+    pub fn new() -> Data_stack {
+        Data_stack {data : Chunk::new()}
     }
     pub fn push(&mut self, v:i64) {
         self.data.push(v)
@@ -29,42 +29,21 @@ impl Stack {
     pub fn deep(&self) -> usize {
         self.data.len()
     }
-}
-
-pub struct Val_stack {
-    data:Vec<Chunk>
-}
-
-impl Val_stack {
-    pub fn new() -> Val_stack {
-        Val_stack {data : Vec::new()}
-    }
-    pub fn prepare_call(&mut self, capacity:usize) {
-        self.data.push(vec![0; capacity]);
-    }
     pub fn get(&self, idx:usize) -> i64 {
-        let len = self.data.len();
-        let last_chunk = &self.data[len - 1];
-        last_chunk[idx]
+        self.data[idx]
     }
     pub fn set(&mut self, idx:usize, v:i64) {
-        let len = self.data.len();
-        let mut last_chunk = &mut self.data[len - 1];
-        last_chunk[idx] = v;
-    }
-    pub fn before_return(&mut self) {
-        let len = self.data.len();
-        self.data.remove(len);
+        self.data[idx] = v;
     }
 }
 
 pub struct ThreadMem {
-    pub stack: Stack,
-    pub val_s: Val_stack
+    pub stack: Data_stack,
+    pub sp_stack : Vec<usize>
 }
 
 impl ThreadMem {
     pub fn new() -> ThreadMem {
-        ThreadMem {stack: Stack::new(), val_s: Val_stack::new()}
+        ThreadMem {stack: Data_stack::new(), sp_stack: vec![]}
     }
 }
