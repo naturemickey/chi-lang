@@ -7,14 +7,15 @@ use chilang::chi::vm::mem::*;
 
 #[test]
 fn test_add() {
-    let mut mem = ThreadMem::new();
-    let mut l = Box::new(Chunk::new());
+    let mut l = Chunk::new();
+    l.push(0);
     l.push(STORE);
     l.push(1);
     l.push(STORE);
     l.push(2);
     l.push(I_ADD);
-    execute(&mut mem, &l);
+    let mut mem = ThreadMem::new(&mut l);
+    execute(&mut mem);
     let mut s = &mem.stack;
     assert_eq!(s.deep(), 1);
     assert_eq!(s.top(), 3);
@@ -22,14 +23,15 @@ fn test_add() {
 
 #[test]
 fn test_sub() {
-    let mut mem = ThreadMem::new();
-    let mut l = Box::new(Chunk::new());
+    let mut l = Chunk::new();
+    l.push(0);
     l.push(STORE);
     l.push(1);
     l.push(STORE);
     l.push(2);
     l.push(I_SUB);
-    execute(&mut mem, &l);
+    let mut mem = ThreadMem::new(&mut l);
+    execute(&mut mem);
     let mut s = &mem.stack;
     assert_eq!(s.deep(), 1);
     assert_eq!(s.top(), -1);

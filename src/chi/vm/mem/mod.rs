@@ -37,13 +37,15 @@ impl Data_stack {
     }
 }
 
-pub struct ThreadMem {
-    pub stack: Data_stack,
-    pub sp_stack : Vec<usize>
+pub struct ThreadMem<'a> {
+    pub stack    : Data_stack,
+    pub sp_stack : Vec<usize>,
+    pub sp_idx   : usize,
+    pub lambda   : &'a Chunk
 }
 
-impl ThreadMem {
-    pub fn new() -> ThreadMem {
-        ThreadMem {stack: Data_stack::new(), sp_stack: vec![]}
+impl <'a> ThreadMem<'a> {
+    pub fn new(lbda : &Chunk) -> ThreadMem {
+        ThreadMem {stack: Data_stack::new(), sp_stack: vec![1; 65536], sp_idx:0, lambda: lbda}
     }
 }
