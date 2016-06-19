@@ -4,7 +4,17 @@ use std::collections::HashMap;
 pub type Chunk = Vec<i64>;
 
 pub struct Context {
-    lambda_map:HashMap<String, Box<Chunk>>
+    lambdas    : Vec<Chunk>,
+    lambda_map : HashMap<String, usize>
+}
+
+impl Context {
+    pub fn new() -> Context {
+        Context {lambdas: vec![], lambda_map: HashMap::default()}
+    }
+    pub fn get_lambda(&self, idx: usize) -> &Chunk {
+        unsafe { self.lambdas.get_unchecked(idx) }
+    }
 }
 
 pub struct Data_stack {
@@ -41,11 +51,16 @@ pub struct ThreadMem<'a> {
     pub stack    : Data_stack,
     pub sp_stack : Vec<usize>,
     pub sp_idx   : usize,
-    pub lambda   : &'a Chunk
+    pub lambda_stack : Vec<usize>,
+    pub context      : &'a Context
 }
 
 impl <'a> ThreadMem<'a> {
-    pub fn new(lbda : &Chunk) -> ThreadMem {
-        ThreadMem {stack: Data_stack::new(), sp_stack: vec![1; 65536], sp_idx:0, lambda: lbda}
+    pub fn new(lbda_idx:usize, ctx:&Context) -> ThreadMem {
+        ThreadMem {stack: Data_stack::new(), sp_stack: vec![1; 65536], sp_idx:0, lambda_stack:vec![lbda_idx], context : ctx }
+    }
+    pub fn get_lambda(&mut self) -> &Chunk {
+        let lidx = self.lambda_stack.len() - 1;
+        self.context.get_lambda(self.lambda_stack[lidx])
     }
 }
