@@ -1,5 +1,6 @@
 
 use std::collections::HashMap;
+use chi::vm::cpu::alu::*;
 
 pub type Chunk = Vec<i64>;
 
@@ -62,5 +63,15 @@ impl <'a> ThreadMem<'a> {
     pub fn get_lambda(&mut self) -> &Chunk {
         let lidx = self.lambda_stack.len() - 1;
         self.context.get_lambda(self.lambda_stack[lidx])
+    }
+    pub fn execute(&mut self) {
+        let sp_idx = self.sp_idx;
+        let mut sp: usize = self.sp_stack[sp_idx];
+        let lambda = self.get_lambda();
+        let mut stack = &mut self.stack;
+        let len = lambda.len();
+        while sp < len {
+            execute_alu(stack, lambda, &mut sp)
+        }
     }
 }

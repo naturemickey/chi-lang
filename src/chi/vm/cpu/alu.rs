@@ -1,18 +1,7 @@
 use chi::vm::cpu::*;
 use chi::vm::mem::*;
 
-pub fn execute(mut mem: ThreadMem) {
-    let sp_idx = mem.sp_idx;
-    let mut sp: usize = mem.sp_stack[sp_idx];
-    let lambda = mem.get_lambda();
-    let mut stack = &mut mem.stack;
-    let len = lambda.len();
-    while sp < len {
-        execute_prv(stack, lambda, &mut sp)
-    }
-}
-
-fn execute_prv(stack: &mut Data_stack, lambda:&Chunk, sp:&mut usize) {
+pub fn execute_alu(stack: &mut Data_stack, lambda:&Chunk, sp:&mut usize) {
     let command = lambda[*sp];
     *sp += 1;
     match command & FFFFFFFF {
