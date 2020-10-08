@@ -20,8 +20,21 @@ functionBody
     ;
 
 block
-    : '{' '}'
+    : '{' blockStatements? '}'
     ;
+
+blockStatements
+	:	blockStatement+
+	;
+
+blockStatement
+	:	localObjectDeclarationStatement
+	|	statement
+	;
+
+localObjectDeclarationStatement
+	:	localObjectDeclaration ';'
+	;
 
 
 // Lexer:
