@@ -20,6 +20,7 @@ pub fn read_lines(file: &File) -> Vec<String> {
     loop {
         let result = reader.read_line(&mut line);
         if result.is_ok() {
+            println!("line : {}", line);
             res.push(line.to_string())
         } else {
             println!("{}", result.unwrap_err());

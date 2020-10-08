@@ -22,7 +22,7 @@ fn main() {
         panic!("there is not a file to compile.");
     }
 
-    println!("{}", &filename);
+    println!("filename: {}", &filename);
 
     let v = read_lines(&File::open(&filename).unwrap());
 
