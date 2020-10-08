@@ -1,0 +1,7 @@
+main:
+    istore 1
+    istore 2
+    istore 3
+    imul
+    iadd
+    print

@@ -7,11 +7,24 @@ use std::fs::File;
 
 fn main() {
     let mut filename = "".to_string();
+
+    let mut is_first = true;
     for argument in env::args() {
+        if is_first {
+            is_first = false;
+            continue;
+        }
         filename = argument.to_string();
         break;
     }
-    let v = read_file(&File::open(&filename).unwrap());
+
+    if filename.eq("") {
+        panic!("there is not a file to compile.");
+    }
+
+    println!("{}", &filename);
+
+    let v = read_lines(&File::open(&filename).unwrap());
 
     println!("{:?}", &v);
 }
