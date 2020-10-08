@@ -26,5 +26,10 @@ fn main() {
 
     let v = read_lines(&File::open(&filename).unwrap());
 
-    println!("{:?}", &v);
+    for line in v {
+        for c in line.trim().chars() {
+            print!("{}", c);
+        }
+        println!()
+    }
 }
