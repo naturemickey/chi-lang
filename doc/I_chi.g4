@@ -24,18 +24,29 @@ block
     ;
 
 blockStatements
-	:	blockStatement+
+	: blockStatement+
 	;
 
 blockStatement
-	:	localObjectDeclarationStatement
-	|	statement
+	: localObjectDeclarationStatement
+	| statement
 	;
 
 localObjectDeclarationStatement
-	:	localObjectDeclaration ';'
+	: localObjectDeclaration ';'
 	;
 
+localObjectDeclaration
+    : LET MUTABLE? Identifier ('=' variableInitializer)?
+    ;
+
+variableInitializer
+    : IntegerLiteral // TODO 先假设只有整数，后面再改。
+    ;
+
+statement
+    :
+    ;
 
 // Lexer:
 
@@ -50,6 +61,8 @@ PUBLIC : 'pub' ;
 PRIVATE : 'pvt' ;
 PROTECTED : 'prtc' ;
 FUNCTION : 'fn' ;
+LET : 'let' ;
+MUTABLE : 'mut' ;
 
 // Separators
 
@@ -102,6 +115,28 @@ MOD_ASSIGN : '%=';
 LSHIFT_ASSIGN : '<<=';
 RSHIFT_ASSIGN : '>>=';
 URSHIFT_ASSIGN : '>>>=';
+
+// Integer Literals
+
+// TODO 先只做一个十进制
+IntegerLiteral
+    : DecimalIntegerLiteral
+    ;
+
+fragment
+DecimalIntegerLiteral
+    : DecimalNumeral [lL]?
+    ;
+
+fragment
+DecimalNumeral
+	: '0'
+	| NonZeroDigit Digits?
+	;
+
+fragment NonZeroDigit : [1-9]  ;
+fragment Digits       : [0-9]+ ;
+
 
 // 这里标识符暂时只支持这些，还不打算支持更复杂的文字。虽然很多语言都支持“中文”，但似乎各种规范都不希望程序员使用中文。
 Identifier      : IdentifierStart IdentifierPart*   ;
