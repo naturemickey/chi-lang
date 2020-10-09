@@ -46,6 +46,10 @@ FLOAT : 'float' ;
 VOID : 'void' ;
 MAIN : 'main' ;
 BOOL : 'bool' ;
+PUBLIC : 'pub' ;
+PRIVATE : 'pvt' ;
+PROTECTED : 'prtc' ;
+FUNCTION : 'fn' ;
 
 // Separators
 
