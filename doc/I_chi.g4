@@ -45,7 +45,7 @@ variableInitializer
     ;
 
 statement
-    :
+    : ADD // TODO 明天从这里开始
     ;
 
 // Lexer:
@@ -63,6 +63,7 @@ PROTECTED : 'prtc' ;
 FUNCTION : 'fn' ;
 LET : 'let' ;
 MUTABLE : 'mut' ;
+CHARACTOR : 'char' ;
 
 // Separators
 
