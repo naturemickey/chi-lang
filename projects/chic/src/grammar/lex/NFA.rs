@@ -9,11 +9,11 @@ impl NFA {
         NFA { start, finish }
     }
 
-    pub fn create_ty_chars(chars: Chars) -> NFA {
+    pub fn create_ty_chars(chars: Chars, token_type:TokenType) -> NFA {
         panic!()
     }
 
-    pub fn alternate(nfaVec: Vec<NFA>) -> NFA {
+    pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
         panic!()
     }
 }
