@@ -6,3 +6,4 @@ include!("State.rs");
 include!("StateNext.rs");
 include!("StateType.rs");
 include!("TokenType.rs");
+include!("Token.rs");
