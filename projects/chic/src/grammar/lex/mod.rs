@@ -1,5 +1,6 @@
 use crate::grammar::lex::StateType::NORMAL;
 use std::str::Chars;
+use std::rc::Rc;
 
 include!("NFA.rs");
 include!("State.rs");

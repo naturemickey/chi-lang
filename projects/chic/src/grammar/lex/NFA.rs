@@ -1,11 +1,11 @@
 #[warn(non_upper_case_globals)]
 pub struct NFA {
-    start: Box<State>,
-    finish: Box<State>,
+    start: Rc<State>,
+    finish: Rc<State>,
 }
 
 impl NFA {
-    pub fn new(start: Box<State>, finish: Box<State>) -> NFA {
+    pub fn new(start: Rc<State>, finish: Rc<State>) -> NFA {
         NFA { start, finish }
     }
 
