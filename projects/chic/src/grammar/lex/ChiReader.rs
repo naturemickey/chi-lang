@@ -5,12 +5,12 @@ pub struct ChiReader {
 
 impl ChiReader {
     pub fn new(nfa: Rc<NFA>, chars: Chars) -> ChiReader {
-        panic!()
+        todo!()
     }
 }
 
 struct ChiReaderState {
-    current_states: Vec<Rc<State>>,
+    current_states: HashSet<Rc<State>>,
     last_token: Token,
-    last_accepted_states: Vec<Rc<State>>,
+    last_accepted_states: HashSet<Rc<State>>,
 }

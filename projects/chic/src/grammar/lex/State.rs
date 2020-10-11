@@ -1,3 +1,4 @@
+// #[derive(Hash, PartialEq, Eq)]
 pub struct State {
     next_vec: Vec<StateNext>,
     token_type: Option<TokenType>, // 终止状态时为Some，否则为None
@@ -23,3 +24,15 @@ impl State {
         }
     }
 }
+
+// impl Hash for State {
+//     fn hash<H: std::hash::Hasher>(&self, _: &mut H) {
+//         todo!()
+//     }
+// }
+
+// impl PartialEq<State> for State {
+//     fn eq(&self, that: &State) -> bool {
+//         &&self == &&that
+//     }
+// }

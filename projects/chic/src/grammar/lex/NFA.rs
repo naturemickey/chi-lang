@@ -10,10 +10,10 @@ impl NFA {
     }
 
     pub fn create_ty_chars(chars: Chars, token_type:TokenType) -> NFA {
-        panic!()
+        todo!()
     }
 
     pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
-        panic!()
+        todo!()
     }
 }
