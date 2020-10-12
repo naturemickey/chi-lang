@@ -5,15 +5,15 @@ pub struct State {
 }
 
 impl State {
-    fn new(next_vec: Vec<StateNext>, token_type: Option<TokenType>) -> State {
-        State { next_vec, token_type }
+    fn new(next_vec: Vec<StateNext>, token_type: Option<TokenType>) -> Rc<State> {
+        Rc::new(State { next_vec, token_type })
     }
 
-    pub fn new_normal(next_vec: Vec<StateNext>) -> State {
+    pub fn new_normal(next_vec: Vec<StateNext>) -> Rc<State> {
         Self::new(next_vec, None)
     }
 
-    pub fn new_accepted(token_type: Option<TokenType>) -> State {
+    pub fn new_accepted(token_type: Option<TokenType>) -> Rc<State> {
         Self::new(Vec::new(), token_type)
     }
 

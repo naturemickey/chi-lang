@@ -7,6 +7,10 @@ impl ChiReader {
     pub fn new(nfa: Rc<NFA>, chars: Chars) -> ChiReader {
         todo!()
     }
+
+    pub fn get_token(&mut self) -> Token {
+        todo!()
+    }
 }
 
 struct ChiReaderState {
