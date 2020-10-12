@@ -30,4 +30,8 @@ impl NFA {
     pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
         todo!()
     }
+
+    pub fn kleen_closure(nfa: NFA) -> NFA {
+        todo!()
+    }
 }
