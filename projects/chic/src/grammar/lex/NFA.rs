@@ -30,16 +30,23 @@ impl NFA {
     pub fn alternate(mut nfa_vec: Vec<NFA>) -> NFA {
         let finish = State::new_finish();
 
+        let mut next_vec = Vec::new();
         for mut nfa in nfa_vec {
-            let mut rc_state = nfa.finish;
-            let mut state = (*rc_state).borrow_mut();
-            state.add_next(StateNext::new(finish.clone()));
-            // nfa.finish.borrow_mut().get_mut().add_next(StateNext::new(finish.clone()));
+            (*nfa.finish).borrow_mut().add_next(StateNext::new(finish.clone()));
+            next_vec.push(StateNext::new(nfa.start));
         }
-        todo!()
+        let start = State::new_normal(next_vec);
+        NFA::new(start, finish)
     }
 
-    pub fn kleen_closure(nfa: NFA) -> NFA {
-        todo!()
+    pub fn kleen_closure(mut nfa: NFA) -> NFA {
+        let finish = State::new_finish();
+
+        (*nfa.finish).borrow_mut().add_next(StateNext::new(finish.clone()));
+        (*nfa.finish).borrow_mut().add_next(StateNext::new(nfa.start.clone()));
+
+        let start = State::new_normal(vec![StateNext::new(nfa.start), StateNext::new(finish.clone())]);
+
+        NFA::new(start, finish)
     }
 }

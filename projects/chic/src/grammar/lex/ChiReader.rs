@@ -1,10 +1,12 @@
 pub struct ChiReader {
+    s: String,
     nfa: Rc<NFA>,
     tokens: Vec<Token>,
 }
 
 impl ChiReader {
-    pub fn new(nfa: Rc<NFA>, chars: Chars) -> ChiReader {
+    pub fn new(nfa: Rc<NFA>, s: String) -> ChiReader {
+
         todo!()
     }
 

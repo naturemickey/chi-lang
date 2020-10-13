@@ -5,6 +5,7 @@ use std::collections::HashSet;
 use std::hash::Hash;
 use std::borrow::BorrowMut;
 use std::cell::RefCell;
+use std::ops::Index;
 
 include!("NFA.rs");
 include!("State.rs");
