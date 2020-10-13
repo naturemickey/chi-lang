@@ -1,11 +1,11 @@
 #[warn(non_upper_case_globals)]
 pub struct NFA {
-    start: Rc<State>,
-    finish: Rc<State>,
+    start: Rc<RefCell<State>>,
+    finish: Rc<RefCell<State>>,
 }
 
 impl NFA {
-    pub fn new(start: Rc<State>, finish: Rc<State>) -> NFA {
+    pub fn new(start: Rc<RefCell<State>>, finish: Rc<RefCell<State>>) -> NFA {
         NFA { start, finish }
     }
 
@@ -27,7 +27,15 @@ impl NFA {
         NFA::new(start, finish)
     }
 
-    pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
+    pub fn alternate(mut nfa_vec: Vec<NFA>) -> NFA {
+        let finish = State::new_finish();
+
+        for mut nfa in nfa_vec {
+            let mut rc_state = nfa.finish;
+            let mut state = (*rc_state).borrow_mut();
+            state.add_next(StateNext::new(finish.clone()));
+            // nfa.finish.borrow_mut().get_mut().add_next(StateNext::new(finish.clone()));
+        }
         todo!()
     }
 
