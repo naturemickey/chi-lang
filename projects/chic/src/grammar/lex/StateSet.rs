@@ -7,25 +7,29 @@ impl StateSet {
         Self { states }
     }
 
-    // pub fn add(&mut self, state: Rc<State>) -> bool {
-    //     for rc_state in &self.states {
-    //         if Rc::as_ptr(rc_state) == Rc::as_ptr(&state) {
-    //             return false;
-    //         }
-    //     }
-    //     self.states.push(state);
-    //     true
-    // }
+    pub fn add(&mut self, state: Rc<RefCell<State>>) -> bool {
+        for rc_state in &self.states {
+            if Rc::as_ptr(rc_state) == Rc::as_ptr(&state) {
+                return false;
+            }
+        }
+        self.states.push(state);
+        true
+    }
 
     pub fn jump(&self, c: char) -> StateSet {
-        let mut states: Vec<Rc<RefCell<State>>> = Vec::new();
+        let mut state_set = StateSet { states: Vec::new() };
         for state in &self.states {
             let st = &**state;
             let ss = st.borrow().jump(c);
             for s in ss {
-                states.push(s);
+                state_set.add(s.clone());
             }
         }
+        state_set
+    }
+
+    pub fn acepted_states(&self) -> StateSet {
         todo!()
     }
 }

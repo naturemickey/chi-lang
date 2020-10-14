@@ -4,7 +4,7 @@ use std::rc::Rc;
 use std::collections::HashSet;
 use std::hash::Hash;
 use std::borrow::{BorrowMut, Borrow};
-use std::cell::RefCell;
+use std::cell::{RefCell, Ref};
 use std::ops::Index;
 
 include!("NFA.rs");

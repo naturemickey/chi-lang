@@ -49,12 +49,15 @@ impl State {
     fn jump(&self, c: char) -> Vec<Rc<RefCell<State>>> {
         let mut v = Vec::new();
         for sn in &self.next_vec {
-            if sn.need_cond && (*sn.cond)(c) {
-                v.push(sn.next.clone());
+            match sn.jump(c) {
+                Some(next) => {
+                    v.push(sn.next.clone());
 
-                for state in &(*sn.next).borrow().eq_state_vec() {
-                    v.push(state.clone());
+                    for state in &(*sn.next).borrow().eq_state_vec() {
+                        v.push(state.clone());
+                    }
                 }
+                None => {}
             }
         }
         v

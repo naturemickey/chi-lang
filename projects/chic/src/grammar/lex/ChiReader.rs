@@ -20,15 +20,14 @@ impl ChiReader {
         ChiReader { s, nfa, chars, reader_state }
     }
 
-    pub fn get_token(&mut self) -> Token {
+    pub fn get_next_token(&mut self) -> Token {
         todo!()
     }
 }
 
 struct ChiReaderState {
-    current_states: HashSet<Rc<State>>,
-    last_token: Token,
-    last_accepted_states: HashSet<Rc<State>>,
+    current_states: StateSet,
+    last_accepted_states: StateSet,
 }
 
 impl ChiReaderState {
