@@ -6,10 +6,10 @@ pub struct StateNext {
 
 impl StateNext {
     pub fn new_by_cond(cond: Rc<dyn Fn(char) -> bool>, next: Rc<RefCell<State>>) -> StateNext {
-        StateNext { need_cond: false, cond, next }
+        Self { need_cond: true, cond, next }
     }
 
-    pub fn new(next: Rc<RefCell<State>>) -> StateNext {
-        Self::new_by_cond(Rc::new(|c| true), next)
+    pub fn new_no_cond(next: Rc<RefCell<State>>) -> StateNext {
+        Self { need_cond: false, cond: Rc::new(|_| true), next }
     }
 }

@@ -32,8 +32,8 @@ impl NFA {
 
         let mut next_vec = Vec::new();
         for mut nfa in nfa_vec {
-            (*nfa.finish).borrow_mut().add_next(StateNext::new(finish.clone()));
-            next_vec.push(StateNext::new(nfa.start));
+            (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(finish.clone()));
+            next_vec.push(StateNext::new_no_cond(nfa.start));
         }
         let start = State::new_normal(next_vec);
         NFA::new(start, finish)
@@ -42,10 +42,10 @@ impl NFA {
     pub fn kleen_closure(mut nfa: NFA) -> NFA {
         let finish = State::new_finish();
 
-        (*nfa.finish).borrow_mut().add_next(StateNext::new(finish.clone()));
-        (*nfa.finish).borrow_mut().add_next(StateNext::new(nfa.start.clone()));
+        (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(finish.clone()));
+        (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(nfa.start.clone()));
 
-        let start = State::new_normal(vec![StateNext::new(nfa.start), StateNext::new(finish.clone())]);
+        let start = State::new_normal(vec![StateNext::new_no_cond(nfa.start), StateNext::new_no_cond(finish.clone())]);
 
         NFA::new(start, finish)
     }
