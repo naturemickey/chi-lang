@@ -33,9 +33,9 @@ struct ChiReaderState {
 
 impl ChiReaderState {
     pub fn new(nfa:Rc<NFA>) -> ChiReaderState {
-        let mut current_states = HashSet::new();
-        let _nfa:&NFA = nfa.borrow();
-        current_states.insert(_nfa.start.clone());
+        // let mut current_states = HashSet::new();
+        // let _nfa:&NFA = nfa.borrow();
+        // current_states.insert(_nfa.start.clone());
         todo!()
     }
 }
