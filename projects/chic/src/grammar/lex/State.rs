@@ -31,6 +31,34 @@ impl State {
     pub fn add_next(&mut self, next: StateNext) {
         self.next_vec.push(next);
     }
+
+    pub fn eq_state_vec(&self) -> Vec<Rc<RefCell<State>>> {
+        let mut res = Vec::new();
+        for next in &self.next_vec {
+            if next.need_cond == false {
+                res.push(next.next.clone());
+            }
+        }
+        res
+    }
+
+    /*
+    跳转到下一个状态。
+    因为是NFA的状态，所以下一状态的个数是不确定的。
+    */
+    fn jump(&self, c: char) -> Vec<Rc<RefCell<State>>> {
+        let mut v = Vec::new();
+        for sn in &self.next_vec {
+            if sn.need_cond && (*sn.cond)(c) {
+                v.push(sn.next.clone());
+
+                for state in &(*sn.next).borrow().eq_state_vec() {
+                    v.push(state.clone());
+                }
+            }
+        }
+        v
+    }
 }
 
 // impl Hash for State {
