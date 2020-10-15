@@ -40,4 +40,18 @@ impl StateSet {
         }
         res
     }
+
+    pub fn token_types(&self) -> Vec<TokenType> {
+        let mut vec = Vec::new();
+
+        for state in &self.states {
+            let token_type = &(**state).borrow().token_type;
+            match token_type {
+                Some(tt) => vec.push(tt.clone()),
+                None => {},
+            }
+        }
+
+        vec
+    }
 }
