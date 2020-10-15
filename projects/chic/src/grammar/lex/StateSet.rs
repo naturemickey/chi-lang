@@ -30,6 +30,14 @@ impl StateSet {
     }
 
     pub fn acepted_states(&self) -> StateSet {
-        todo!()
+        let mut res = StateSet {states:Vec::new()};
+        for state in &self.states {
+            let st = &**state;
+            let token_type = &(*st).borrow().token_type;
+            if token_type.is_some() {
+                res.states.push(state.clone());
+            }
+        }
+        res
     }
 }
