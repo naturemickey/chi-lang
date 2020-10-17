@@ -29,8 +29,8 @@ impl StateSet {
         state_set
     }
 
-    pub fn acepted_states(&self) -> StateSet {
-        let mut res = StateSet {states:Vec::new()};
+    pub fn accepted_states(&self) -> StateSet {
+        let mut res = StateSet { states: Vec::new() };
         for state in &self.states {
             let st = &**state;
             let token_type = &(*st).borrow().token_type;
@@ -48,10 +48,14 @@ impl StateSet {
             let token_type = &(**state).borrow().token_type;
             match token_type {
                 Some(tt) => vec.push(tt.clone()),
-                None => {},
+                None => {}
             }
         }
 
         vec
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.states.is_empty()
     }
 }

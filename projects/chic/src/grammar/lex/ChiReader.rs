@@ -21,13 +21,32 @@ impl ChiReader {
     }
 
     pub fn get_next_token(&mut self) -> Token {
-        let index_now = self.reader_state.index_now;
+        let mut index_now = self.reader_state.index_from;
 
-        let states = self.reader_state.current_states.jump(self.chars[index_now]);
+        loop {
+            let states = self.reader_state.current_states.jump(self.chars[index_now]);
+            index_now += 1;
+            if states.is_empty() {
+                break;
+            }
 
-        let accepted_states = states.acepted_states();
+            let accepted_states = states.accepted_states();
+            if !accepted_states.token_types().is_empty() {
+                self.reader_state.index_finish = index_now;
+            }
+        }
 
-        todo!()
+        self.build_token()
+    }
+
+    fn build_token(&self) -> Token {
+        let accepted_states = self.reader_state.last_accepted_states.accepted_states();
+        let token_type = (*accepted_states.states[0]).borrow().token_type.clone().unwrap();
+        let mut literal = "".to_string();
+        for idx in self.reader_state.index_from..self.reader_state.index_finish {
+            literal.push(self.chars[idx]);
+        }
+        Token { token_type: token_type, literal }
     }
 }
 
@@ -36,7 +55,6 @@ struct ChiReaderState {
     last_accepted_states: StateSet,
     index_from: usize,
     index_finish: usize,
-    index_now: usize,
 }
 
 impl ChiReaderState {
@@ -49,6 +67,6 @@ impl ChiReaderState {
 
         let last_accepted_states = StateSet { states: Vec::new() };
 
-        Self { current_states, last_accepted_states, index_from: 0, index_finish: 0, index_now: 0 }
+        Self { current_states, last_accepted_states, index_from: 0, index_finish: 0 }
     }
 }
