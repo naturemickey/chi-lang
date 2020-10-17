@@ -84,12 +84,22 @@ impl NFA {
         NFA::new(start, finish)
     }
 
+    pub fn kleen_closure_plus(nfa: NFA) -> NFA {
+        (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(nfa.start.clone()));
+        nfa
+    }
+
     pub fn chi_nfa() -> Rc<NFA> {
         let _INT = NFA::new_by_string("int", Some(INT), false);
         let _FLOAT = NFA::new_by_string("float", Some(FLOAT), false);
 
+        // [ \t\r\n\u000C]+  -> skip ;
+        let _WS_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        let mut _WS = NFA::kleen_closure_plus(_WS_c);
+        (*_WS.finish).borrow_mut().skip = true;
 
-        let nfa_vec = vec![_INT, _FLOAT, ];
+
+        let nfa_vec = vec![_INT, _FLOAT, _WS];
         Rc::new(NFA::alternate(nfa_vec))
     }
 }
