@@ -1,11 +1,12 @@
-
-use std::str::Chars;
-use std::rc::Rc;
+use std::borrow::{Borrow, BorrowMut};
+use std::cell::{Ref, RefCell};
 use std::collections::HashSet;
 use std::hash::Hash;
-use std::borrow::{BorrowMut, Borrow};
-use std::cell::{RefCell, Ref};
 use std::ops::Index;
+use std::rc::Rc;
+use std::str::Chars;
+
+use crate::grammar::lex::TokenType::*;
 
 include!("NFA.rs");
 include!("State.rs");

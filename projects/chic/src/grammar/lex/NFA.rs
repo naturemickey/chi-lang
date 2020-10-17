@@ -9,7 +9,8 @@ impl NFA {
         NFA { start, finish }
     }
 
-    pub fn create_ty_chars(chars: Chars, token_type: Option<TokenType>) -> NFA {
+    pub fn new_by_string(s: &str, token_type: Option<TokenType>) -> NFA {
+        let chars = s.chars();
         let finish = State::new_accepted(token_type);
         let mut start = State::new_normal(vec![]);
 
@@ -48,5 +49,13 @@ impl NFA {
         let start = State::new_normal(vec![StateNext::new_no_cond(nfa.start), StateNext::new_no_cond(finish.clone())]);
 
         NFA::new(start, finish)
+    }
+
+    pub fn chi_nfa() -> Rc<NFA> {
+        let _INT = NFA::new_by_string("int", Some(INT));
+        let _FLOAT = NFA::new_by_string("float", Some(FLOAT));
+
+        let nfa_vec = vec![_INT, _FLOAT, ];
+        Rc::new(NFA::alternate(nfa_vec))
     }
 }
