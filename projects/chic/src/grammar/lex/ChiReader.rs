@@ -20,8 +20,25 @@ impl ChiReader {
         ChiReader { s, nfa, chars, reader_state }
     }
 
-    pub fn get_next_token(&mut self) -> Token {
+    pub fn the_rest_of_tokens(&mut self) -> Vec<Token> {
+        let mut res = Vec::new();
+
+        loop {
+            match self.get_next_token() {
+                Some(token) => res.push(token),
+                None => break,
+            }
+        }
+
+        res
+    }
+
+    pub fn get_next_token(&mut self) -> Option<Token> {
         let mut index_now = self.reader_state.index_from;
+
+        if index_now >= self.chars.len() {
+            return None;
+        }
 
         loop {
             let states = self.reader_state.current_states.jump(self.chars[index_now]);
@@ -36,7 +53,7 @@ impl ChiReader {
             }
         }
 
-        self.build_token()
+        Some(self.build_token())
     }
 
     fn build_token(&self) -> Token {
