@@ -35,11 +35,11 @@ impl NFA {
         NFA::new(start, finish)
     }
 
-    pub fn alternate(mut nfa_vec: Vec<NFA>) -> NFA {
+    pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
         let finish = State::new_finish();
 
         let mut next_vec = Vec::new();
-        for mut nfa in nfa_vec {
+        for nfa in nfa_vec {
             (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(finish.clone()));
             next_vec.push(StateNext::new_no_cond(nfa.start));
         }
@@ -47,7 +47,7 @@ impl NFA {
         NFA::new(start, finish)
     }
 
-    pub fn concatenate(mut nfa_vec: Vec<NFA>) -> NFA {
+    pub fn concatenate(nfa_vec: Vec<NFA>) -> NFA {
         if nfa_vec.len() <= 0 {
             panic!("impossible.");
         }
@@ -61,7 +61,7 @@ impl NFA {
         let mut start = State::new_finish();
         let mut finish = State::new_finish();
         let mut first = true;
-        for mut nfa in nfa_vec {
+        for nfa in nfa_vec {
             if first {
                 first = false;
                 start = nfa.start.clone();
@@ -90,16 +90,29 @@ impl NFA {
     }
 
     pub fn chi_nfa() -> Rc<NFA> {
-        let _INT = NFA::new_by_string("int", Some(INT), false);
-        let _FLOAT = NFA::new_by_string("float", Some(FLOAT), false);
+        let _int = NFA::new_by_string("int", Some(INT), false);
+        let _float = NFA::new_by_string("float", Some(FLOAT), false);
 
         // [ \t\r\n\u000C]+  -> skip ;
-        let _WS_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
-        let mut _WS = NFA::kleen_closure_plus(_WS_c);
-        (*_WS.finish).borrow_mut().skip = true;
+        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        let mut _ws = NFA::kleen_closure_plus(_ws_c);
+        (*_ws.finish).borrow_mut().skip = true;
 
 
-        let nfa_vec = vec![_INT, _FLOAT, _WS];
+        let nfa_vec = vec![_int, _float, _ws];
         Rc::new(NFA::alternate(nfa_vec))
+    }
+
+    /// 为了调试，打印出来看看
+    pub fn print(&self) {
+        let state_str_vec = Self::break_state(self.start.clone());
+
+        for state_str in state_str_vec {
+            println!["{}", &state_str];
+        }
+    }
+
+    pub fn break_state(state:Rc<RefCell<State>>) -> Vec<String> {
+        (*state).borrow().to_string_vec()
     }
 }

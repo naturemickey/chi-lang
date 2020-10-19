@@ -1,13 +1,10 @@
 
-use std::borrow::{Borrow, BorrowMut};
-use std::cell::{Ref, RefCell};
-use std::collections::HashSet;
-use std::hash::Hash;
-use std::ops::Index;
+use std::cell::RefCell;
 use std::rc::Rc;
-use std::str::Chars;
+use std::fmt::{Display, Formatter, Debug};
 
-use crate::grammar::lex::TokenType::*;
+use self::TokenType::*;
+use std::fmt;
 
 include!("NFA.rs");
 include!("State.rs");
@@ -15,4 +12,5 @@ include!("StateNext.rs");
 include!("TokenType.rs");
 include!("Token.rs");
 include!("ChiReader.rs");
+include!("ChiReaderState.rs");
 include!("StateSet.rs");
