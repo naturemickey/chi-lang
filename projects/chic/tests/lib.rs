@@ -8,7 +8,7 @@ fn test_1() {
 
     let nfa = NFA::chi_nfa();
 
-    (*nfa).print();
+    // (*nfa).print();
 
     let mut reader = ChiReader::new(nfa.clone(), s.to_string());
 

@@ -64,37 +64,37 @@ impl State {
         }
         v
     }
-    pub fn to_string_vec(&self) -> Vec<String> {
-        let mut sv = Vec::new();
-        let self_str =
-            match &self.token_type {
-                Some(tt) => "s(".to_string() + &tt.to_string() + ")",
-                None => "ns".to_string()
-            };
-
-        for next in &self.next_vec {
-            let mut next_str = "".to_string();
-
-            if next.need_cond {
-                next_str.push_str("()");
-            }
-
-            next_str.push_str("-->");
-
-            let state = (*next.next).borrow();
-
-            let state_string_vec = state.to_string_vec();
-
-            for state_string in state_string_vec {
-                let mut s = "".to_string();
-                s.push_str(&self_str);
-                s.push_str(&next_str);
-                s.push_str(&state_string);
-                sv.push(s);
-            }
-        }
-        sv
-    }
+    // pub fn to_string_vec(&self) -> Vec<String> {
+    //     let mut sv = Vec::new();
+    //     let self_str =
+    //         match &self.token_type {
+    //             Some(tt) => "s(".to_string() + &tt.to_string() + ")",
+    //             None => "ns".to_string()
+    //         };
+    //
+    //     for next in &self.next_vec {
+    //         let mut next_str = "".to_string();
+    //
+    //         if next.need_cond {
+    //             next_str.push_str("()");
+    //         }
+    //
+    //         next_str.push_str("-->");
+    //
+    //         let state = (*next.next).borrow();
+    //
+    //         let state_string_vec = state.to_string_vec();
+    //
+    //         for state_string in state_string_vec {
+    //             let mut s = "".to_string();
+    //             s.push_str(&self_str);
+    //             s.push_str(&next_str);
+    //             s.push_str(&state_string);
+    //             sv.push(s);
+    //         }
+    //     }
+    //     sv
+    // }
 }
 
 // impl Hash for State {

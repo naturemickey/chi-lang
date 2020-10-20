@@ -103,16 +103,16 @@ impl NFA {
         Rc::new(NFA::alternate(nfa_vec))
     }
 
-    /// 为了调试，打印出来看看
-    pub fn print(&self) {
-        let state_str_vec = Self::break_state(self.start.clone());
-
-        for state_str in state_str_vec {
-            println!["{}", &state_str];
-        }
-    }
-
-    pub fn break_state(state:Rc<RefCell<State>>) -> Vec<String> {
-        (*state).borrow().to_string_vec()
-    }
+    // 为了调试，打印出来看看
+    // pub fn print(&self) {
+    //     let state_str_vec = Self::break_state(self.start.clone());
+    //
+    //     for state_str in state_str_vec {
+    //         println!["{}", &state_str];
+    //     }
+    // }
+    //
+    // pub fn break_state(state:Rc<RefCell<State>>) -> Vec<String> {
+    //     (*state).borrow().to_string_vec()
+    // }
 }
