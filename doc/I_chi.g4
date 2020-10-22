@@ -54,16 +54,19 @@ statement
 
 INT : 'int' ;
 FLOAT : 'float' ;
-VOID : 'void' ;
+// 有可能我们并不需要void
+// VOID : 'void' ;
 MAIN : 'main' ;
 BOOL : 'bool' ;
 PUBLIC : 'pub' ;
-PRIVATE : 'pvt' ;
+PRIVATE : 'pvt';
 PROTECTED : 'prtc' ;
-FUNCTION : 'fn' ;
+FUNCTION : 'fun' ;
 LET : 'let' ;
 MUTABLE : 'mut' ;
 CHARACTOR : 'char' ;
+OVERRIDE : 'override' ;
+TAILREC : 'tailrec' ;
 
 // Separators
 
