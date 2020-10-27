@@ -9,7 +9,7 @@ grammar I_chi;
 // Parser:
 
 functionDeclaration
-    : VOID MAIN '(' formalParameterList ')' functionBody
+    : FUNCTION MAIN '(' formalParameterList ')' functionBody
     ;
 formalParameterList
     : 
