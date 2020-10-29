@@ -25,9 +25,9 @@ impl NFA {
         for c in chars.rev() {
             let next = if is_first {
                 is_first = false;
-                StateNext::new_by_cond(Rc::new(move |_c| _c == c), finish.clone())
+                StateNext::new_by_char(c, finish.clone())
             } else {
-                StateNext::new_by_cond(Rc::new(move |_c| _c == c), start.clone())
+                StateNext::new_by_char(c, start.clone())
             };
             start = State::new_normal(vec![next]);
         }

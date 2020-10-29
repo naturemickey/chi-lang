@@ -37,8 +37,9 @@ impl State {
     pub fn eq_state_vec(&self) -> Vec<Rc<RefCell<State>>> {
         let mut res = Vec::new();
         for next in &self.next_vec {
-            if next.need_cond == false {
-                res.push(next.next.clone());
+            match next.cond {
+                StateNextCond::NONE => res.push(next.next.clone()),
+                _ => {}
             }
         }
         res

@@ -5,6 +5,7 @@ use std::fmt::{Display, Formatter, Debug};
 
 use self::TokenType::*;
 use std::fmt;
+use std::borrow::Borrow;
 
 include!("NFA.rs");
 include!("State.rs");
