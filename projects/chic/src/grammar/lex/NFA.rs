@@ -17,13 +17,16 @@ impl NFA {
     // }
 
     pub fn new_by_string(s: &str, token_type: Option<TokenType>, skip: bool) -> NFA {
+        if s.len() == 0 {
+            panic!("不允许出现空的词法。");
+        }
         let chars = s.chars();
         let finish = State::new_accepted(token_type, skip);
-        let mut start = State::new_normal(vec![]);
+        let mut start = State::new_normal(vec![]); // 此处初始化的start值是一个浪费。
 
         let mut is_first = true;
-        for c in chars.rev() {
-            let next = if is_first {
+        for c in chars.rev() { /// 反着遍历
+            let next = if is_first { // 第一个，即是最后一个
                 is_first = false;
                 StateNext::new_by_char(c, finish.clone())
             } else {
