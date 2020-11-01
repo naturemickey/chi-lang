@@ -34,6 +34,9 @@ impl State {
         self.next_vec.push(next);
     }
 
+    /**
+    等价状态集合——不需要条件就可以跳转的状态的集合。
+    */
     pub fn eq_state_vec(&self) -> Vec<Rc<RefCell<State>>> {
         let mut res = Vec::new();
         for next in &self.next_vec {
@@ -45,7 +48,7 @@ impl State {
         res
     }
 
-    /*
+    /**
     跳转到下一个状态。
     因为是NFA的状态，所以下一状态的个数是不确定的。
     */
@@ -57,13 +60,24 @@ impl State {
                     v.push(next.clone());
 
                     for state in &(*next).borrow().eq_state_vec() {
-                        v.push(state.clone());
+                        if !Self::state_set_contains(&v, state) {
+                            v.push(state.clone());
+                        }
                     }
                 }
                 None => {}
             }
         }
         v
+    }
+
+    fn state_set_contains(states:&Vec<Rc<RefCell<State>>>, state:&Rc<RefCell<State>>) -> bool {
+        for s in states {
+            if s.as_ptr() == state.as_ptr() {
+                return true;
+            }
+        }
+        false
     }
     // pub fn to_string_vec(&self) -> Vec<String> {
     //     let mut sv = Vec::new();

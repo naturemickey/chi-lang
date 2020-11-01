@@ -30,13 +30,6 @@ impl StateNext {
                 None
             },
         }
-
-        //todo!()
-        // if self.need_cond && (*self.cond)(c) {
-        //     Some(self.next.clone())
-        // } else {
-        //     None
-        // }
     }
 }
 
