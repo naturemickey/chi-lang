@@ -1,5 +1,9 @@
+
+static ATOMIC_USIZE :AtomicUsize = AtomicUsize::new(0);
+
 // #[derive(Hash, PartialEq, Eq)]
 pub struct State {
+    id: usize,
     next_vec: Vec<StateNext>,
     /// 终止状态时为Some，否则为None
     token_type: Option<TokenType>,
@@ -8,7 +12,8 @@ pub struct State {
 
 impl State {
     fn new(next_vec: Vec<StateNext>, token_type: Option<TokenType>, skip: bool) -> Rc<RefCell<State>> {
-        Rc::new(RefCell::new(State { next_vec, token_type, skip }))
+        let id = ATOMIC_USIZE.fetch_add(1, Ordering::SeqCst);
+        Rc::new(RefCell::new(State { id, next_vec, token_type, skip }))
     }
 
     pub fn new_normal(next_vec: Vec<StateNext>) -> Rc<RefCell<State>> {

@@ -5,12 +5,12 @@ pub enum TokenType {
     WS,
 }
 
-impl Display for TokenType {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "{}", match self {
-            INT => "INT",
-            FLOAT => "FLOAT",
-            WS => "WS",
-        })
-    }
-}
+// impl Display for TokenType {
+//     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+//         write!(f, "{}", match self {
+//             INT => "INT",
+//             FLOAT => "FLOAT",
+//             WS => "WS",
+//         })
+//     }
+// }

@@ -10,8 +10,8 @@ impl Token {
     }
 }
 
-impl Display for Token {
-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(f, "({}, {})", self.token_type, self.literal)
-    }
-}
+// impl Display for Token {
+//     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+//         write!(f, "({}, {})", self.token_type, self.literal)
+//     }
+// }
