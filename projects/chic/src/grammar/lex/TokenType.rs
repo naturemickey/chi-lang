@@ -14,3 +14,13 @@ pub enum TokenType {
 //         })
 //     }
 // }
+
+impl ToString for TokenType {
+    fn to_string(&self) -> String {
+        match self {
+            INT => "INT",
+            FLOAT => "FLOAT",
+            WS => "FLOAT",
+        }.to_string()
+    }
+}

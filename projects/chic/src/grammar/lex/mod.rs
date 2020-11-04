@@ -7,6 +7,8 @@ use self::TokenType::*;
 // use std::fmt;
 use std::borrow::Borrow;
 use std::sync::atomic::{AtomicUsize, Ordering};
+use std::fmt;
+use std::fmt::Write;
 
 include!("NFA.rs");
 include!("State.rs");

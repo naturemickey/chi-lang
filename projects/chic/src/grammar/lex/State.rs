@@ -128,3 +128,14 @@ impl State {
 //         &&self == &&that
 //     }
 // }
+
+impl ToString for State {
+    fn to_string(&self) -> String {
+        let mut string = String::new();
+        match &self.token_type {
+            Some(tt) => write!(&mut string, "({}, {})", &self.id, tt.to_string()),
+            None => write!(&mut string, "({})", &self.id)
+        };
+        string
+    }
+}

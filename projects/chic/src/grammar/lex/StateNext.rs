@@ -38,3 +38,17 @@ enum StateNextCond {
     CHAR(char),
     FN(Rc<dyn Fn(char) -> bool>),
 }
+
+impl ToString for StateNext {
+    fn to_string(&self) -> String {
+        let mut s = String::new();
+
+        match &self.cond {
+            StateNextCond::NONE => write!(s, " -> {}", self.next.borrow().borrow().to_string()),
+            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", self.next.borrow().borrow().to_string(), c),
+            StateNextCond::FN(_) => write!(s, " -> {} : Fn", self.next.borrow().borrow().to_string()), // 无法打印Fn的内容，有点糟糕。
+        };
+
+        s
+    }
+}

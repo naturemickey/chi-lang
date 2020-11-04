@@ -12,6 +12,9 @@ impl StateSet {
             if Rc::as_ptr(rc_state) == Rc::as_ptr(&state) {
                 return false;
             }
+            if state.borrow().borrow().id == rc_state.borrow().borrow().id {
+                return false;
+            }
         }
         self.states.push(state);
         true
