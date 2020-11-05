@@ -1,5 +1,4 @@
-
-static ATOMIC_USIZE :AtomicUsize = AtomicUsize::new(0);
+static ATOMIC_USIZE: AtomicUsize = AtomicUsize::new(0);
 
 // #[derive(Hash, PartialEq, Eq)]
 pub struct State {
@@ -76,7 +75,7 @@ impl State {
         v
     }
 
-    fn state_set_contains(states:&Vec<Rc<RefCell<State>>>, state:&Rc<RefCell<State>>) -> bool {
+    fn state_set_contains(states: &Vec<Rc<RefCell<State>>>, state: &Rc<RefCell<State>>) -> bool {
         for s in states {
             if s.as_ptr() == state.as_ptr() {
                 return true;
@@ -84,58 +83,24 @@ impl State {
         }
         false
     }
-    // pub fn to_string_vec(&self) -> Vec<String> {
-    //     let mut sv = Vec::new();
-    //     let self_str =
-    //         match &self.token_type {
-    //             Some(tt) => "s(".to_string() + &tt.to_string() + ")",
-    //             None => "ns".to_string()
-    //         };
-    //
-    //     for next in &self.next_vec {
-    //         let mut next_str = "".to_string();
-    //
-    //         if next.need_cond {
-    //             next_str.push_str("()");
-    //         }
-    //
-    //         next_str.push_str("-->");
-    //
-    //         let state = (*next.next).borrow();
-    //
-    //         let state_string_vec = state.to_string_vec();
-    //
-    //         for state_string in state_string_vec {
-    //             let mut s = "".to_string();
-    //             s.push_str(&self_str);
-    //             s.push_str(&next_str);
-    //             s.push_str(&state_string);
-    //             sv.push(s);
-    //         }
-    //     }
-    //     sv
-    // }
 }
-
-// impl Hash for State {
-//     fn hash<H: std::hash::Hasher>(&self, _: &mut H) {
-//         todo!()
-//     }
-// }
-
-// impl PartialEq<State> for State {
-//     fn eq(&self, that: &State) -> bool {
-//         &&self == &&that
-//     }
-// }
 
 impl ToString for State {
     fn to_string(&self) -> String {
         let mut string = String::new();
+
+        write!(&mut string, "({}", &self.id);
+
         match &self.token_type {
-            Some(tt) => write!(&mut string, "({}, {})", &self.id, tt.to_string()),
-            None => write!(&mut string, "({})", &self.id)
+            Some(tt) => { write!(&mut string, ", {}", tt.to_string()); }
+            None => {}
         };
+
+        if self.skip {
+            write!(&mut string, ", skip");
+        }
+
+        write!(&mut string, ")");
         string
     }
 }

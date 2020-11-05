@@ -9,13 +9,6 @@ impl NFA {
         NFA { start, finish }
     }
 
-    // pub fn new_impossible() -> NFA {
-    //     // #![feature(new_uninit)]
-    //     // NFA { start: Rc::new_zeroed(), finish: Rc::new_zeroed() }
-    //     let temp_state = State::new_finish();
-    //     NFA { start: temp_state.clone(), finish: temp_state.clone() }
-    // }
-
     pub fn new_by_string(s: &str, token_type: Option<TokenType>, skip: bool) -> NFA {
         if s.len() == 0 {
             panic!("不允许出现空的词法。");
@@ -105,19 +98,6 @@ impl NFA {
         let nfa_vec = vec![_int, _float, _ws];
         Rc::new(NFA::alternate(nfa_vec))
     }
-
-    // 为了调试，打印出来看看
-    // pub fn print(&self) {
-    //     let state_str_vec = Self::break_state(self.start.clone());
-    //
-    //     for state_str in state_str_vec {
-    //         println!["{}", &state_str];
-    //     }
-    // }
-    //
-    // pub fn break_state(state:Rc<RefCell<State>>) -> Vec<String> {
-    //     (*state).borrow().to_string_vec()
-    // }
 }
 
 impl ToString for NFA {
@@ -128,18 +108,19 @@ impl ToString for NFA {
 
         let mut nexts_str = HashSet::<String>::new();
 
-        self._to_string_inner(start.clone(), &mut tate_set, &mut nexts_str);
+        self._to_string_inner(start.clone(), &mut state_set, &mut nexts_str);
 
         let mut s = String::new();
 
-        write!(&s, "[\n");
-        write!(&s, "start : {}\n", start.borrow().borrow().to_string());
-        write!(&s, "finish: {}\n", finish.borrow().borrow().to_string());
-        write!(&s, "states: {}\n", state_set.to_string());
-        write!(&s, "paths :\n");
+        write!(s, "[\n");
+        write!(s, "start : {}\n", (*start).borrow().to_string());
+        write!(s, "finish: {}\n", (*finish).borrow().to_string());
+        write!(s, "states: {}\n", state_set.to_string());
+        write!(s, "paths :\n");
         for nstr in nexts_str {
-            write!(&s, " {}\n", nstr);
+            write!(s, " {}\n", nstr);
         }
+        write!(s, "]\n");
 
         s
     }
@@ -147,6 +128,21 @@ impl ToString for NFA {
 
 impl NFA {
     fn _to_string_inner(&self, from: Rc<RefCell<State>>, state_set: &mut StateSet, nexts_str: &mut HashSet<String>) {
-        unimplemented!()
+        if state_set.add(from.clone()) {
+            let state_str = (*from).borrow().to_string();
+
+            let mut set2 = StateSet::new(vec![]);
+
+            for next in &(*from).borrow().next_vec {
+                nexts_str.insert(state_str.to_string() + &next.to_string());
+
+                set2.add(next.next.clone());
+                // self._to_string_inner(next.next.clone(), state_set, nexts_str);
+            }
+
+            for state in set2.states {
+                self._to_string_inner(state, state_set, nexts_str);
+            }
+        }
     }
 }

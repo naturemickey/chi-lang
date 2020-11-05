@@ -12,7 +12,7 @@ impl StateSet {
             if Rc::as_ptr(rc_state) == Rc::as_ptr(&state) {
                 return false;
             }
-            if state.borrow().borrow().id == rc_state.borrow().borrow().id {
+            if (**rc_state).borrow().id == (*state).borrow().id {
                 return false;
             }
         }
@@ -67,12 +67,12 @@ impl ToString for StateSet {
     fn to_string(&self) -> String {
         let mut s = String::new();
 
-        write!(&s, "[");
-        for state in self.states {
-            write!(&s, state.borrow().borrow().to_string());
-            write!(&s, ", ");
+        write!(s, "[");
+        for state in &self.states {
+            write!(s, "{}", (**state).borrow().to_string());
+            write!(s, ", ");
         }
-        write!(&s, "]");
+        write!(s, "]");
 
         s
     }

@@ -42,11 +42,12 @@ enum StateNextCond {
 impl ToString for StateNext {
     fn to_string(&self) -> String {
         let mut s = String::new();
+        let next_str = (*self.next).borrow().to_string();
 
         match &self.cond {
-            StateNextCond::NONE => write!(s, " -> {}", self.next.borrow().borrow().to_string()),
-            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", self.next.borrow().borrow().to_string(), c),
-            StateNextCond::FN(_) => write!(s, " -> {} : Fn", self.next.borrow().borrow().to_string()), // 无法打印Fn的内容，有点糟糕。
+            StateNextCond::NONE => write!(s, " -> {}", next_str),
+            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", next_str, c),
+            StateNextCond::FN(_) => write!(s, " -> {} : Fn", next_str), // 无法打印Fn的内容，有点糟糕。
         };
 
         s
