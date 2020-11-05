@@ -62,3 +62,18 @@ impl StateSet {
         self.states.is_empty()
     }
 }
+
+impl ToString for StateSet {
+    fn to_string(&self) -> String {
+        let mut s = String::new();
+
+        write!(&s, "[");
+        for state in self.states {
+            write!(&s, state.borrow().borrow().to_string());
+            write!(&s, ", ");
+        }
+        write!(&s, "]");
+
+        s
+    }
+}

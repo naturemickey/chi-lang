@@ -9,6 +9,8 @@ use std::borrow::Borrow;
 use std::sync::atomic::{AtomicUsize, Ordering};
 use std::fmt;
 use std::fmt::Write;
+use std::collections::HashSet;
+use std::intrinsics::write_bytes;
 
 include!("NFA.rs");
 include!("State.rs");

@@ -119,3 +119,34 @@ impl NFA {
     //     (*state).borrow().to_string_vec()
     // }
 }
+
+impl ToString for NFA {
+    fn to_string(&self) -> String {
+        let mut state_set = StateSet::new(vec![]);
+        let start = self.start.clone();
+        let finish = self.finish.clone();
+
+        let mut nexts_str = HashSet::<String>::new();
+
+        self._to_string_inner(start.clone(), &mut tate_set, &mut nexts_str);
+
+        let mut s = String::new();
+
+        write!(&s, "[\n");
+        write!(&s, "start : {}\n", start.borrow().borrow().to_string());
+        write!(&s, "finish: {}\n", finish.borrow().borrow().to_string());
+        write!(&s, "states: {}\n", state_set.to_string());
+        write!(&s, "paths :\n");
+        for nstr in nexts_str {
+            write!(&s, " {}\n", nstr);
+        }
+
+        s
+    }
+}
+
+impl NFA {
+    fn _to_string_inner(&self, from: Rc<RefCell<State>>, state_set: &mut StateSet, nexts_str: &mut HashSet<String>) {
+        unimplemented!()
+    }
+}
