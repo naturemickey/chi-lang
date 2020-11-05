@@ -77,15 +77,6 @@ impl State {
 
         state_set
     }
-
-    // fn state_set_contains(states: &Vec<Rc<RefCell<State>>>, state: &Rc<RefCell<State>>) -> bool {
-    //     for s in states {
-    //         if s.as_ptr() == state.as_ptr() {
-    //             return true;
-    //         }
-    //     }
-    //     false
-    // }
 }
 
 impl ToString for State {

@@ -20,12 +20,6 @@ impl StateSet {
         true
     }
 
-    // pub fn add_all(&mut self, states: &Vec<Rc<RefCell<State>>>) {
-    //     for state in states {
-    //         self.add(state.clone());
-    //     }
-    // }
-
     pub fn merge(&mut self, other: StateSet) {
         for state in other.states {
             self.add(state.clone());
@@ -33,23 +27,23 @@ impl StateSet {
     }
 
     pub fn jump(&self, c: char) -> StateSet {
+        println!("current state_set length is {}", self.states.len());
         let mut state_set = StateSet { states: Vec::new() };
         for state in &self.states {
-            let st = &**state;
-            let ss = st.borrow().jump(c);
+            let ss = (**state).borrow().jump(c);
 
+            println!("ss length is {}", ss.states.len());
             state_set.merge(ss);
         }
         state_set
     }
 
     pub fn accepted_states(&self) -> StateSet {
-        let mut res = StateSet { states: Vec::new() };
+        let mut res = StateSet::new(vec![]);
         for state in &self.states {
-            let st = &**state;
-            let token_type = &(*st).borrow().token_type;
+            let token_type = &(**state).borrow().token_type;
             if token_type.is_some() {
-                res.states.push(state.clone());
+                res.add(state.clone());
             }
         }
         res

@@ -16,8 +16,8 @@ fn test_1() {
 
     let tokens_comp = vec![
         Token::new(TokenType::INT, "int"),
-        Token::new(TokenType::WS, "  "),
-        Token::new(TokenType::FLOAT, "float"),
+        //Token::new(TokenType::WS, "  "),
+        //Token::new(TokenType::FLOAT, "float"),
     ];
 
     for token in &tokens {

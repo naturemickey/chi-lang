@@ -9,11 +9,8 @@ impl ChiReader {
     pub fn new(nfa: Rc<NFA>, mut s: String) -> ChiReader {
         let mut chars = Vec::new();
 
-        loop {
-            match s.pop() {
-                Some(c) => chars.push(c),
-                None => break,
-            }
+        for c in s.chars() {
+            chars.push(c);
         }
         let reader_state = ChiReaderState::new(nfa.clone());
 
@@ -41,6 +38,9 @@ impl ChiReader {
         }
 
         loop {
+            if index_now >= self.chars.len() {
+                break;
+            }
             let states = self.reader_state.current_states.jump(self.chars[index_now]);
             index_now += 1;
 
@@ -50,15 +50,21 @@ impl ChiReader {
                 break;
             }
 
-            let accepted_states = states.accepted_states();
 
-            if !accepted_states.token_types().is_empty() {
+            let accepted_states = states.accepted_states();
+            self.reader_state.current_states = states;
+
+            if !accepted_states.is_empty() {
                 self.reader_state.index_finish = index_now;
                 self.reader_state.last_accepted_states = accepted_states;
             }
         }
 
-        Some(self.build_token())
+        let res = Some(self.build_token());
+
+        self.reader_state.index_from = index_now + 1;
+
+        res
     }
 
     fn build_token(&self) -> Token {

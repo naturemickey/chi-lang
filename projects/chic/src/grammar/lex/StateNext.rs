@@ -19,11 +19,14 @@ impl StateNext {
     pub fn jump(&self, c: char) -> Option<Rc<RefCell<State>>> {
         match &self.cond {
             StateNextCond::NONE => None, // 在真正跳转的时候不应该走这里；空条件应该是等价状态处理的。
-            StateNextCond::CHAR(_c) => if c == *_c {
-                Some(self.next.clone())
-            } else {
-                None
-            },
+            StateNextCond::CHAR(_c) => {
+                println!("c & c : {} {}", c, _c);
+                if c == *_c {
+                    Some(self.next.clone())
+                } else {
+                    None
+                }
+            }
             StateNextCond::FN(f) => if (**f).borrow()(c) {
                 Some(self.next.clone())
             } else {
@@ -61,7 +64,7 @@ fn visible_char(c: &char) -> String {
 
     if ch >= 33 && ch <= 126 {
         c.to_string()
-    } else if ch == '\t' as u64{
+    } else if ch == '\t' as u64 {
         "\\t".to_string()
     } else if ch == '\r' as u64 {
         "\\r".to_string()
