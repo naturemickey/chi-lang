@@ -18,7 +18,7 @@ impl StateNext {
 
     pub fn jump(&self, c: char) -> Option<Rc<RefCell<State>>> {
         match &self.cond {
-            StateNextCond::NONE => None,
+            StateNextCond::NONE => None, // 在真正跳转的时候不应该走这里；空条件应该是等价状态处理的。
             StateNextCond::CHAR(_c) => if c == *_c {
                 Some(self.next.clone())
             } else {
@@ -46,10 +46,30 @@ impl ToString for StateNext {
 
         match &self.cond {
             StateNextCond::NONE => write!(s, " -> {}", next_str),
-            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", next_str, c),
+            StateNextCond::CHAR(c) => {
+                write!(s, " -> {} : ({})", next_str, visible_char(c))
+            }
             StateNextCond::FN(_) => write!(s, " -> {} : Fn", next_str), // 无法打印Fn的内容，有点糟糕。
         };
 
+        s
+    }
+}
+
+fn visible_char(c: &char) -> String {
+    let ch = c.clone() as u64;
+
+    if ch >= 33 && ch <= 126 {
+        c.to_string()
+    } else if ch == '\t' as u64{
+        "\\t".to_string()
+    } else if ch == '\r' as u64 {
+        "\\r".to_string()
+    } else if ch == '\n' as u64 {
+        "\\n".to_string()
+    } else {
+        let mut s = String::new();
+        write!(s, "\\u{:02X}", ch);
         s
     }
 }

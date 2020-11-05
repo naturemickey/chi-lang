@@ -21,7 +21,7 @@ fn test_1() {
     ];
 
     for token in &tokens {
-        println!("{}", token);
+        println!("{}", token.to_string());
     }
 
     assert_eq!(tokens, tokens_comp)

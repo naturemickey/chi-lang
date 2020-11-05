@@ -20,14 +20,25 @@ impl StateSet {
         true
     }
 
+    // pub fn add_all(&mut self, states: &Vec<Rc<RefCell<State>>>) {
+    //     for state in states {
+    //         self.add(state.clone());
+    //     }
+    // }
+
+    pub fn merge(&mut self, other: StateSet) {
+        for state in other.states {
+            self.add(state.clone());
+        }
+    }
+
     pub fn jump(&self, c: char) -> StateSet {
         let mut state_set = StateSet { states: Vec::new() };
         for state in &self.states {
             let st = &**state;
             let ss = st.borrow().jump(c);
-            for s in ss {
-                state_set.add(s.clone());
-            }
+
+            state_set.merge(ss);
         }
         state_set
     }

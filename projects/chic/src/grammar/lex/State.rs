@@ -41,48 +41,51 @@ impl State {
     /**
     等价状态集合——不需要条件就可以跳转的状态的集合。
     */
-    pub fn eq_state_vec(&self) -> Vec<Rc<RefCell<State>>> {
-        let mut res = Vec::new();
+    pub fn eq_state_vec(&self) -> StateSet {
+        let mut state_set = StateSet::new(vec![]);
+
         for next in &self.next_vec {
             match next.cond {
-                StateNextCond::NONE => res.push(next.next.clone()),
+                StateNextCond::NONE => {
+                    if state_set.add(next.next.clone()) { // 如果能添加，就认为是新的，于是递归；
+                        state_set.merge((*next.next.clone()).borrow().eq_state_vec());
+                    }
+                }
                 _ => {}
             }
         }
-        res
+        state_set
     }
 
     /**
     跳转到下一个状态。
     因为是NFA的状态，所以下一状态的个数是不确定的。
     */
-    fn jump(&self, c: char) -> Vec<Rc<RefCell<State>>> {
-        let mut v = Vec::new();
+    fn jump(&self, c: char) -> StateSet {
+        let mut state_set = StateSet::new(vec![]);
+
         for sn in &self.next_vec {
             match sn.jump(c) {
                 Some(next) => {
-                    v.push(next.clone());
-
-                    for state in &(*next).borrow().eq_state_vec() {
-                        if !Self::state_set_contains(&v, state) {
-                            v.push(state.clone());
-                        }
+                    if state_set.add(next.clone()) {
+                        state_set.merge((*next).borrow().eq_state_vec());
                     }
                 }
                 None => {}
             }
         }
-        v
+
+        state_set
     }
 
-    fn state_set_contains(states: &Vec<Rc<RefCell<State>>>, state: &Rc<RefCell<State>>) -> bool {
-        for s in states {
-            if s.as_ptr() == state.as_ptr() {
-                return true;
-            }
-        }
-        false
-    }
+    // fn state_set_contains(states: &Vec<Rc<RefCell<State>>>, state: &Rc<RefCell<State>>) -> bool {
+    //     for s in states {
+    //         if s.as_ptr() == state.as_ptr() {
+    //             return true;
+    //         }
+    //     }
+    //     false
+    // }
 }
 
 impl ToString for State {
