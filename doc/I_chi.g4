@@ -151,5 +151,5 @@ IdentifierStart : [_A-Za-z]                         ;
 IdentifierPart  : [_A-Za-z0-9]                      ;
 
 WS              : [ \t\r\n\u000C]+  -> skip ;
-COMMENT         : '/*' .*? '*/'     -> skip ;
+COMMENT         : '/*' .* '*/'     -> skip ;
 LINE_COMMENT    : '//' ~[\r\n]*     -> skip ;

@@ -133,13 +133,9 @@ impl NFA {
     }
 
     pub fn chi_nfa() -> Rc<NFA> {
+        // Keywords
         let _int = NFA::new_by_string("int", Some(INT), false);
         let _float = NFA::new_by_string("float", Some(FLOAT), false);
-
-        // [ \t\r\n\u000C]+  -> skip ;
-        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
-        let mut _ws = NFA::kleen_closure_plus(_ws_c);
-        (*_ws.finish).borrow_mut().skip = true;
 
         let _bool = NFA::new_by_string("bool", Some(BOOL), false);
         let _boolean = NFA::new_by_string("boolean", Some(BOOL), false);
@@ -163,10 +159,9 @@ impl NFA {
         let _tailrec = NFA::new_by_string("tailrec", Some(TAILREC), false);
         let _class = NFA::new_by_string("class", Some(CLASS), false);
 
-        let nfa_vec = vec![
+        let mut keyworlds_nfas = vec![
             _int,
             _float,
-            _ws,
             _bool, _boolean,
             _pub, _public,
             _pvt, _private,
@@ -179,6 +174,104 @@ impl NFA {
             _tailrec,
             _class,
         ];
+
+        let mut separators_nfas = vec![
+            NFA::new_by_string("(", Some(LPAREN), false),
+            NFA::new_by_string(")", Some(RPAREN), false),
+            NFA::new_by_string("{", Some(LBRACE), false),
+            NFA::new_by_string("}", Some(RBRACE), false),
+            NFA::new_by_string("[", Some(LBRACK), false),
+            NFA::new_by_string("]", Some(RBRACK), false),
+            NFA::new_by_string(";", Some(SEMI), false),
+            NFA::new_by_string(",", Some(COMMA), false),
+            NFA::new_by_string(".", Some(DOT), false),
+        ];
+
+        let mut operators_nfas = vec![
+            NFA::new_by_string("=", Some(ASSIGN), false),
+            NFA::new_by_string(">", Some(GT), false),
+            NFA::new_by_string("<", Some(LT), false),
+            NFA::new_by_string("!", Some(BANG), false),
+            NFA::new_by_string("~", Some(TILDE), false),
+            NFA::new_by_string("?", Some(QUESTION), false),
+            NFA::new_by_string(":", Some(COLON), false),
+            NFA::new_by_string("==", Some(EQUAL), false),
+            NFA::new_by_string("<=", Some(LE), false),
+            NFA::new_by_string(">=", Some(GE), false),
+            NFA::new_by_string("!=", Some(NOTEQUAL), false),
+            NFA::new_by_string("&&", Some(AND), false),
+            NFA::new_by_string("||", Some(OR), false),
+            NFA::new_by_string("++", Some(INC), false),
+            NFA::new_by_string("--", Some(DEC), false),
+            NFA::new_by_string("+", Some(ADD), false),
+            NFA::new_by_string("-", Some(SUB), false),
+            NFA::new_by_string("*", Some(MUL), false),
+            NFA::new_by_string("/", Some(DIV), false),
+            NFA::new_by_string("&", Some(BITAND), false),
+            NFA::new_by_string("|", Some(BITOR), false),
+            NFA::new_by_string("^", Some(CARET), false),
+            NFA::new_by_string("%", Some(MOD), false),
+            NFA::new_by_string("->", Some(ARROW), false),
+            NFA::new_by_string("::", Some(COLONCOLON), false),
+            NFA::new_by_string("+=", Some(ADD_ASSIGN), false),
+            NFA::new_by_string("-=", Some(SUB_ASSIGN), false),
+            NFA::new_by_string("*=", Some(MUL_ASSIGN), false),
+            NFA::new_by_string("/=", Some(DIV_ASSIGN), false),
+            NFA::new_by_string("&=", Some(AND_ASSIGN), false),
+            NFA::new_by_string("|=", Some(OR_ASSIGN), false),
+            NFA::new_by_string("^=", Some(XOR_ASSIGN), false),
+            NFA::new_by_string("%=", Some(MOD_ASSIGN), false),
+            NFA::new_by_string("<<=", Some(LSHIFT_ASSIGN), false),
+            NFA::new_by_string(">>=", Some(RSHIFT_ASSIGN), false),
+            NFA::new_by_string(">>>=", Some(URSHIFT_ASSIGN), false),
+        ];
+
+        let mut nfa_vec = Vec::new();
+        nfa_vec.append(&mut keyworlds_nfas);
+        nfa_vec.append(&mut separators_nfas);
+        nfa_vec.append(&mut operators_nfas);
+
+        nfa_vec.push(Self::_ws());
+        nfa_vec.push(Self::_comment());
+        nfa_vec.push(Self::_line_comment());
+
         Rc::new(NFA::alternate(nfa_vec))
+    }
+
+    fn _ws() -> NFA {
+        // [ \t\r\n\u000C]+  -> skip ;
+        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        let mut _ws = NFA::kleen_closure_plus(_ws_c);
+        (*_ws.finish).borrow_mut().skip = true;
+        _ws
+    }
+
+    fn _comment() -> NFA {
+        // '/*' .* '*/'      -> skip ;
+        let start = NFA::new_by_string("/*", None, false);
+        let finish = NFA::new_by_string("*/", Some(COMMENT), true);
+
+        let m_finish = State::new_finish();
+        let m_state_next = StateNext::new_by_fn(Rc::new(|_| true), m_finish.clone());
+        let m_start = State::new_normal(vec![m_state_next]);
+        let middle = NFA::new(m_start.clone(), m_finish.clone());
+
+        NFA::concatenate(vec![start, middle, finish])
+    }
+
+    fn _line_comment() -> NFA {
+        // '//' ~[\r\n]*     -> skip ;
+        let start = NFA::new_by_string("//", None, false);
+
+        let r_finish = State::new_finish();
+        let r_state_next = StateNext::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), r_finish.clone());
+        let r_start = State::new_normal(vec![r_state_next]);
+
+        let rest = NFA::new(r_start.clone(), r_finish.clone());
+
+        rest.finish.borrow_mut().skip = true;
+        rest.finish.borrow_mut().token_type = Some(LINE_COMMENT);
+
+        NFA::concatenate(vec![start, rest])
     }
 }
