@@ -84,20 +84,6 @@ impl NFA {
         (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(nfa.start.clone()));
         nfa
     }
-
-    pub fn chi_nfa() -> Rc<NFA> {
-        let _int = NFA::new_by_string("int", Some(INT), false);
-        let _float = NFA::new_by_string("float", Some(FLOAT), false);
-
-        // [ \t\r\n\u000C]+  -> skip ;
-        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
-        let mut _ws = NFA::kleen_closure_plus(_ws_c);
-        (*_ws.finish).borrow_mut().skip = true;
-
-
-        let nfa_vec = vec![_int, _float, _ws];
-        Rc::new(NFA::alternate(nfa_vec))
-    }
 }
 
 impl ToString for NFA {
@@ -144,5 +130,55 @@ impl NFA {
                 self._to_string_inner(state, state_set, nexts_str);
             }
         }
+    }
+
+    pub fn chi_nfa() -> Rc<NFA> {
+        let _int = NFA::new_by_string("int", Some(INT), false);
+        let _float = NFA::new_by_string("float", Some(FLOAT), false);
+
+        // [ \t\r\n\u000C]+  -> skip ;
+        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        let mut _ws = NFA::kleen_closure_plus(_ws_c);
+        (*_ws.finish).borrow_mut().skip = true;
+
+        let _bool = NFA::new_by_string("bool", Some(BOOL), false);
+        let _boolean = NFA::new_by_string("boolean", Some(BOOL), false);
+
+        let _pub = NFA::new_by_string("pub", Some(PUBLIC), false);
+        let _public = NFA::new_by_string("public", Some(PUBLIC), false);
+
+        let _pvt = NFA::new_by_string("pvt", Some(PRIVATE), false);
+        let _private = NFA::new_by_string("private", Some(PRIVATE), false);
+
+        let _prtc = NFA::new_by_string("prtc", Some(PROTECTED), false);
+        let _protected = NFA::new_by_string("protected", Some(PROTECTED), false);
+
+        let _fun = NFA::new_by_string("fun", Some(FUNCTION), false);
+        let _function = NFA::new_by_string("function", Some(FUNCTION), false);
+
+        let _let = NFA::new_by_string("let", Some(LET), false);
+        let _mut = NFA::new_by_string("mut", Some(MUTABLE), false);
+        let _char = NFA::new_by_string("char", Some(CHARACTER), false);
+        let _override = NFA::new_by_string("override", Some(OVERRIDE), false);
+        let _tailrec = NFA::new_by_string("tailrec", Some(TAILREC), false);
+        let _class = NFA::new_by_string("class", Some(CLASS), false);
+
+        let nfa_vec = vec![
+            _int,
+            _float,
+            _ws,
+            _bool, _boolean,
+            _pub, _public,
+            _pvt, _private,
+            _prtc, _protected,
+            _fun, _function,
+            _let,
+            _mut,
+            _char,
+            _override,
+            _tailrec,
+            _class,
+        ];
+        Rc::new(NFA::alternate(nfa_vec))
     }
 }

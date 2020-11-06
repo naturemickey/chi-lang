@@ -9,7 +9,7 @@ grammar I_chi;
 // Parser:
 
 functionDeclaration
-    : FUNCTION MAIN '(' formalParameterList ')' functionBody
+    : FUNCTION Identifier '(' formalParameterList ')' functionBody
     ;
 formalParameterList
     : 
@@ -56,17 +56,20 @@ INT : 'int' ;
 FLOAT : 'float' ;
 // 有可能我们并不需要void
 // VOID : 'void' ;
-MAIN : 'main' ;
-BOOL : 'bool' ;
-PUBLIC : 'pub' ;
-PRIVATE : 'pvt';
-PROTECTED : 'prtc' ;
-FUNCTION : 'fun' ;
+// main应该只是一个标识符
+// MAIN : 'main' ;
+BOOL : 'bool' | 'boolean' ;
+// 以下全称做为保留不使用。使用简称。
+PUBLIC : 'pub' | 'public' ;
+PRIVATE : 'pvt' | 'private';
+PROTECTED : 'prtc' | 'protected';
+FUNCTION : 'fun' | 'function' ;
 LET : 'let' ;
 MUTABLE : 'mut' ;
-CHARACTOR : 'char' ;
+CHARACTER : 'char' ;
 OVERRIDE : 'override' ;
 TAILREC : 'tailrec' ;
+CLASS : 'class' ;
 
 // Separators
 
