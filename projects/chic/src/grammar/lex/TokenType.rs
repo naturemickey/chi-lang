@@ -1,4 +1,5 @@
 #[derive(Clone, Eq, PartialEq, Debug)]
+#[allow(non_camel_case_types)]
 pub enum TokenType {
     // Keywords
     INT,

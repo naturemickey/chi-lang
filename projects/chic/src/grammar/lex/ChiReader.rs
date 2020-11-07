@@ -6,7 +6,7 @@ pub struct ChiReader {
 }
 
 impl ChiReader {
-    pub fn new(nfa: Rc<NFA>, mut s: String) -> ChiReader {
+    pub fn new(nfa: Rc<NFA>, s: String) -> ChiReader {
         let mut chars = Vec::new();
 
         for c in s.chars() {

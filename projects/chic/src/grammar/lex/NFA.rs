@@ -31,6 +31,13 @@ impl NFA {
         NFA::new(start, finish)
     }
 
+    pub fn new_by_fn(_fn: Rc<dyn Fn(char) -> bool>, token_type: Option<TokenType>, skip: bool) -> NFA {
+        let finish = State::new_accepted(token_type, skip);
+        let next = StateNext::new_by_fn(_fn, finish.clone());
+        let start = State::new_normal(vec![next]);
+        NFA::new(start, finish)
+    }
+
     pub fn alternate(nfa_vec: Vec<NFA>) -> NFA {
         let finish = State::new_finish();
 
@@ -131,7 +138,9 @@ impl NFA {
             }
         }
     }
+}
 
+impl NFA {
     pub fn chi_nfa() -> Rc<NFA> {
         // Keywords
         let _int = NFA::new_by_string("int", Some(INT), false);
@@ -257,10 +266,7 @@ impl NFA {
         let start = NFA::new_by_string("/*", None, false);
         let finish = NFA::new_by_string("*/", Some(COMMENT), true);
 
-        let m_finish = State::new_finish();
-        let m_state_next = StateNext::new_by_fn(Rc::new(|_| true), m_finish.clone());
-        let m_start = State::new_normal(vec![m_state_next]);
-        let middle = NFA::new(m_start.clone(), m_finish.clone());
+        let middle = NFA::new_by_fn(Rc::new(|_| true), None, false);
 
         NFA::concatenate(vec![start, middle, finish])
     }
@@ -268,16 +274,19 @@ impl NFA {
     fn _line_comment() -> NFA {
         // '//' ~[\r\n]*     -> skip ;
         let start = NFA::new_by_string("//", None, false);
-
-        let r_finish = State::new_finish();
-        let r_state_next = StateNext::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), r_finish.clone());
-        let r_start = State::new_normal(vec![r_state_next]);
-
-        let rest = NFA::new(r_start.clone(), r_finish.clone());
+        let rest = NFA::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), None, false);
 
         rest.finish.borrow_mut().skip = true;
         rest.finish.borrow_mut().token_type = Some(LINE_COMMENT);
 
         NFA::concatenate(vec![start, rest])
+    }
+}
+
+impl NFA {
+    // fragment
+    fn _single_character() -> NFA {
+        // ~['\\\r\n]
+        unimplemented!()
     }
 }
