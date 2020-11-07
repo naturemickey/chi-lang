@@ -123,6 +123,51 @@ LSHIFT_ASSIGN : '<<=';
 RSHIFT_ASSIGN : '>>=';
 URSHIFT_ASSIGN : '>>>=';
 
+// Boolean Literals
+
+BooleanLiteral
+	:	'true'
+	|	'false'
+	;
+
+// Character Literals
+
+CharacterLiteral
+	:	'\'' SingleCharacter '\''
+	|	'\'' EscapeSequence '\''
+	;
+
+// Escape Sequences for Character and String Literals
+
+fragment
+EscapeSequence
+	:	'\\' [btnfr"'\\]
+	|	OctalEscape
+    |   UnicodeEscape // This is not in the spec but prevents having to preprocess the input
+	;
+
+fragment
+OctalEscape
+	:	'\\' OctalDigit
+	|	'\\' OctalDigit OctalDigit
+	|	'\\' ZeroToThree OctalDigit OctalDigit
+	;
+
+fragment
+ZeroToThree
+	:	[0-3]
+	;
+
+// This is not in the spec but prevents having to preprocess the input
+fragment
+UnicodeEscape
+    :   '\\' 'u'+  HexDigit HexDigit HexDigit HexDigit
+    ;
+fragment
+SingleCharacter
+	:	~['\\\r\n]
+	;
+
 // Integer Literals
 
 // TODO 先只做一个十进制
@@ -141,6 +186,15 @@ DecimalNumeral
 	| NonZeroDigit Digits?
 	;
 
+fragment
+OctalDigit
+	:	[0-7]
+	;
+
+fragment
+HexDigit
+	:	[0-9a-fA-F]
+	;
 fragment NonZeroDigit : [1-9]  ;
 fragment Digits       : [0-9]+ ;
 
@@ -151,5 +205,5 @@ IdentifierStart : [_A-Za-z]                         ;
 IdentifierPart  : [_A-Za-z0-9]                      ;
 
 WS              : [ \t\r\n\u000C]+  -> skip ;
-COMMENT         : '/*' .* '*/'     -> skip ;
+COMMENT         : '/*' .* '*/'      -> skip ;
 LINE_COMMENT    : '//' ~[\r\n]*     -> skip ;

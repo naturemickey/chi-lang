@@ -65,6 +65,9 @@ pub enum TokenType {
     RSHIFT_ASSIGN,
     URSHIFT_ASSIGN,
 
+    // Boolean Literals
+    BooleanLiteral,
+
     WS,
     COMMENT,
     LINE_COMMENT,
@@ -138,6 +141,8 @@ impl ToString for TokenType {
             LSHIFT_ASSIGN => "<<=",
             RSHIFT_ASSIGN => ">>=",
             URSHIFT_ASSIGN => ">>>=",
+
+            BooleanLiteral => "bool",
 
             WS => "\\s",
             COMMENT => "/* */",

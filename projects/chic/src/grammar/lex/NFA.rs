@@ -226,10 +226,16 @@ impl NFA {
             NFA::new_by_string(">>>=", Some(URSHIFT_ASSIGN), false),
         ];
 
+        let mut booleans_nfas = vec![
+            NFA::new_by_string("true", Some(BooleanLiteral), false),
+            NFA::new_by_string("false", Some(BooleanLiteral), false),
+        ];
+
         let mut nfa_vec = Vec::new();
         nfa_vec.append(&mut keyworlds_nfas);
         nfa_vec.append(&mut separators_nfas);
         nfa_vec.append(&mut operators_nfas);
+        nfa_vec.append(&mut booleans_nfas);
 
         nfa_vec.push(Self::_ws());
         nfa_vec.push(Self::_comment());
