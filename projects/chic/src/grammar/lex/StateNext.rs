@@ -49,9 +49,7 @@ impl ToString for StateNext {
 
         match &self.cond {
             StateNextCond::NONE => write!(s, " -> {}", next_str),
-            StateNextCond::CHAR(c) => {
-                write!(s, " -> {} : ({})", next_str, visible_char(c))
-            }
+            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", next_str, visible_char(c)),
             StateNextCond::FN(_) => write!(s, " -> {} : Fn", next_str), // 无法打印Fn的内容，有点糟糕。
         };
 

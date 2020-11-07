@@ -6,7 +6,7 @@ use chic::grammar::lex::TokenType::{INT, FLOAT};
 fn main() {
     f2();
 }
-
+#[allow(dead_code)]
 fn f1() {
     let _int = NFA::new_by_string("int", Some(INT), false);
     let _float = NFA::new_by_string("float", Some(FLOAT), false);

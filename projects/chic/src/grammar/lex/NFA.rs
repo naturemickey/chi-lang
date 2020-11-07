@@ -91,6 +91,12 @@ impl NFA {
         (*nfa.finish).borrow_mut().add_next(StateNext::new_no_cond(nfa.start.clone()));
         nfa
     }
+
+    pub fn non_or_one(nfa: NFA) -> NFA {
+        let next = StateNext::new_no_cond(nfa.finish.clone());
+        nfa.start.borrow_mut().next_vec.push(next);
+        nfa
+    }
 }
 
 impl ToString for NFA {
@@ -287,6 +293,42 @@ impl NFA {
     // fragment
     fn _single_character() -> NFA {
         // ~['\\\r\n]
-        unimplemented!()
+        Self::new_by_fn(Rc::new(|c| c != '\'' && c != '\\' && c != '\r' && c != '\n'), None, false)
+    }
+
+    fn _decimal_numeral() -> NFA {
+        // DecimalNumeral
+        //     : '0'
+        //     | NonZeroDigit Digits?
+        //     ;
+        let zero = Self::new_by_string("0", None, false);
+        let non_zero = Self::_non_zero_digit();
+        let digits = Self::non_or_one(Self::_digits());
+
+        Self::alternate(vec![zero, Self::concatenate(vec![non_zero, digits])])
+    }
+
+    fn _octal_digit() -> NFA {
+        // [0-7]
+        Self::new_by_fn(Rc::new(|c| '0' <= c && c <= '7'), None, false)
+    }
+
+    fn _hex_digit() -> NFA {
+        // [0-9a-fA-F]
+        Self::new_by_fn(Rc::new(|c| ('0' <= c && c <= '9') ||
+            ('a' <= c && c <= 'f') ||
+            ('A' <= c && c <= 'F')
+        ), None, false)
+    }
+
+    fn _non_zero_digit() -> NFA {
+        // [1-9]
+        Self::new_by_fn(Rc::new(|c| '1' <= c && c <= '9'), None, false)
+    }
+
+    fn _digits() -> NFA {
+        // [0-9]+
+        let nfa = Self::new_by_fn(Rc::new(|c| '0' <= c && c <= '9'), None, false);
+        Self::kleen_closure_plus(nfa)
     }
 }
