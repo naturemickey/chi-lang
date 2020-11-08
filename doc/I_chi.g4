@@ -143,14 +143,14 @@ fragment
 EscapeSequence
 	:	'\\' [btnfr"'\\]
 	|	OctalEscape
-    |   UnicodeEscape // This is not in the spec but prevents having to preprocess the input
+    |   UnicodeEscape
 	;
 
 fragment
 OctalEscape
-	:	'\\' OctalDigit
-	|	'\\' OctalDigit OctalDigit
-	|	'\\' ZeroToThree OctalDigit OctalDigit
+	:	'\\{' OctalDigit '}'
+	|	'\\{' OctalDigit OctalDigit '}'
+	|	'\\{' ZeroToThree OctalDigit OctalDigit '}'
 	;
 
 fragment
@@ -158,10 +158,9 @@ ZeroToThree
 	:	[0-3]
 	;
 
-// This is not in the spec but prevents having to preprocess the input
 fragment
 UnicodeEscape
-    :   '\\' 'u'+  HexDigit HexDigit HexDigit HexDigit
+    :   '\\' 'u'+ '{' HexDigit HexDigit HexDigit HexDigit '}'
     ;
 fragment
 SingleCharacter

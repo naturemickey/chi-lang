@@ -299,6 +299,7 @@ impl NFA {
 
 impl NFA {
     // fragment
+
     fn _single_character() -> NFA {
         // ~['\\\r\n]
         Self::new_by_fn(Rc::new(|c| c != '\'' && c != '\\' && c != '\r' && c != '\n'), None, false)
@@ -310,9 +311,9 @@ impl NFA {
         //     : DecimalNumeral [lL]?
         //     ;
         let decimal_numeral = Self::_decimal_numeral();
-        let l_L_ = Self::non_or_one(Self::new_by_fn(Rc::new(|c| c == 'l' || c == 'L'), None, false));
+        let l_suffix = Self::non_or_one(Self::new_by_fn(Rc::new(|c| c == 'l' || c == 'L'), None, false));
 
-        Self::concatenate(vec![decimal_numeral, l_L_]);
+        Self::concatenate(vec![decimal_numeral, l_suffix])
     }
 
     fn _decimal_numeral() -> NFA {
