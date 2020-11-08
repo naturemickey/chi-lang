@@ -69,6 +69,9 @@ pub enum TokenType {
     // Boolean Literals
     BooleanLiteral,
 
+    // Integer Literals
+    IntegerLiteral,
+
     WS,
     COMMENT,
     LINE_COMMENT,
@@ -143,7 +146,9 @@ impl ToString for TokenType {
             RSHIFT_ASSIGN => ">>=",
             URSHIFT_ASSIGN => ">>>=",
 
-            BooleanLiteral => "bool",
+            BooleanLiteral => "",
+
+            IntegerLiteral => "",
 
             WS => "\\s",
             COMMENT => "/* */",

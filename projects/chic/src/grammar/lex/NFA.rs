@@ -287,6 +287,14 @@ impl NFA {
 
         NFA::concatenate(vec![start, rest])
     }
+
+    fn _integer_literal() -> NFA {
+        let nfa = Self::_decimal_integer_literal();
+
+        // 未来扩展，目前先做一个十进制
+
+        nfa
+    }
 }
 
 impl NFA {
@@ -294,6 +302,17 @@ impl NFA {
     fn _single_character() -> NFA {
         // ~['\\\r\n]
         Self::new_by_fn(Rc::new(|c| c != '\'' && c != '\\' && c != '\r' && c != '\n'), None, false)
+    }
+
+    fn _decimal_integer_literal() -> NFA {
+        // fragment
+        // DecimalIntegerLiteral
+        //     : DecimalNumeral [lL]?
+        //     ;
+        let decimal_numeral = Self::_decimal_numeral();
+        let l_L_ = Self::non_or_one(Self::new_by_fn(Rc::new(|c| c == 'l' || c == 'L'), None, false));
+
+        Self::concatenate(vec![decimal_numeral, l_L_]);
     }
 
     fn _decimal_numeral() -> NFA {
