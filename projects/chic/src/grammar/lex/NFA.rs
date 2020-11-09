@@ -252,6 +252,9 @@ impl NFA {
         nfa_vec.append(&mut operators_nfas);
         nfa_vec.append(&mut booleans_nfas);
 
+        nfa_vec.push(Self::_integer_literal());
+        nfa_vec.push(Self::_character_literal());
+
         nfa_vec.push(Self::_ws());
         nfa_vec.push(Self::_comment());
         nfa_vec.push(Self::_line_comment());
@@ -297,7 +300,16 @@ impl NFA {
     }
 
     fn _character_literal() -> NFA {
-        unimplemented!()
+        // CharacterLiteral
+        // 	:	'\'' SingleCharacter '\''
+        // 	|	'\'' EscapeSequence '\''
+        // 	;
+        let prefix_and_suffix = || Self::new_by_string("'", None, false);
+
+        Self::alternate(vec![
+            Self::concatenate(vec![prefix_and_suffix(), Self::_single_character(), prefix_and_suffix()]),
+            Self::concatenate(vec![prefix_and_suffix(), Self::_escape_sequence(), prefix_and_suffix()])
+        ])
     }
 }
 
