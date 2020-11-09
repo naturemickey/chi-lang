@@ -72,6 +72,9 @@ pub enum TokenType {
     // Integer Literals
     IntegerLiteral,
 
+    // Character Literals
+    CharacterLiteral,
+
     WS,
     COMMENT,
     LINE_COMMENT,
@@ -81,19 +84,19 @@ impl ToString for TokenType {
     fn to_string(&self) -> String {
         match self {
             // Keywords
-            INT => "int",
-            FLOAT => "float",
-            BOOL => "bool",
-            PUBLIC => "pub",
-            PRIVATE => "pvt",
-            PROTECTED => "prtc",
-            FUNCTION => "fun",
-            LET => "let",
-            MUTABLE => "mut",
-            CHARACTER => "char",
-            OVERRIDE => "override",
-            TAILREC => "tailrec",
-            CLASS => "class",
+            INT => "INT",
+            FLOAT => "FLOAT",
+            BOOL => "BOOL",
+            PUBLIC => "PUBLIC",
+            PRIVATE => "PRIVATE",
+            PROTECTED => "PROTECTED",
+            FUNCTION => "FUNCTION",
+            LET => "LET",
+            MUTABLE => "MUTABLE",
+            CHARACTER => "CHARACTER",
+            OVERRIDE => "OVERRIDE",
+            TAILREC => "TAILREC",
+            CLASS => "CLASS",
 
             // Separators
             LPAREN => "(",
@@ -146,11 +149,13 @@ impl ToString for TokenType {
             RSHIFT_ASSIGN => ">>=",
             URSHIFT_ASSIGN => ">>>=",
 
-            BooleanLiteral => "",
+            BooleanLiteral => "BooleanLiteral",
 
-            IntegerLiteral => "",
+            IntegerLiteral => "IntegerLiteral",
 
-            WS => "\\s",
+            CharacterLiteral => "CharacterLiteral",
+
+            WS => "WS",
             COMMENT => "/* */",
             LINE_COMMENT => "//...",
         }.to_string()

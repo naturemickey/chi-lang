@@ -295,10 +295,70 @@ impl NFA {
 
         nfa
     }
+
+    fn _character_literal() -> NFA {
+        unimplemented!()
+    }
 }
 
 impl NFA {
     // fragment
+
+    fn _escape_sequence() -> NFA {
+        // fragment
+        // EscapeSequence
+        // 	:	'\\' [btnfr"'\\]
+        // 	|	OctalEscape
+        //  |   UnicodeEscape
+        // 	;
+        Self::alternate(vec![
+            Self::concatenate(vec![
+                Self::new_by_string("\\", None, false),
+                Self::new_by_fn(Rc::new(|c| "btnfr\"'\\".contains(c)), None, fale),
+            ]),
+            Self::_octal_escape(),
+            Self::_unicode_escape(),
+        ])
+    }
+
+    fn _octal_escape() -> NFA {
+        // fragment
+        // OctalEscape
+        // 	:	'\\{' OctalDigit '}'
+        // 	|	'\\{' OctalDigit OctalDigit '}'
+        // 	|	'\\{' ZeroToThree OctalDigit OctalDigit '}'
+        // 	;
+        let prefix = || Self::new_by_string("\\\\{", None, false);
+        let suffix = || Self::new_by_string("}", None, false);
+
+        Self::concatenate(vec![
+            Self::concatenate(vec![prefix(), Self::_octal_digit(), suffix()]),
+            Self::concatenate(vec![prefix(), Self::_octal_digit(), Self::_octal_digit(), suffix()]),
+            Self::concatenate(vec![prefix(), Self::_zero_to_three(), Self::_octal_digit(), Self::_octal_digit(), suffix()]),
+        ])
+    }
+
+    fn _zero_to_three() -> NFA {
+        Self::new_by_string("0123", None, false)
+    }
+
+    fn _unicode_escape() -> NFA {
+        // fragment
+        // UnicodeEscape
+        //     :   '\\' 'u'+ '{' HexDigit HexDigit HexDigit HexDigit '}'
+        //     ;
+        let prefix = Self::concatenate(vec![
+            Self::new_by_string("\\\\", None, false),
+            Self::kleen_closure_plus(Self::new_by_string("u", None, false)),
+            Self::new_by_string("{", None, false),
+        ]);
+        let hex_digits = Self::concatenate(vec![
+            Self::_hex_digit(), Self::_hex_digit(), Self::_hex_digit(), Self::_hex_digit(),
+        ]);
+        let suffix = Self::new_by_string("}", None, false);
+
+        Self::concatenate(vec![prefix, hex_digits, suffix])
+    }
 
     fn _single_character() -> NFA {
         // ~['\\\r\n]
