@@ -7,8 +7,9 @@ use self::TokenType::*;
 // use std::fmt;
 use std::borrow::Borrow;
 use std::sync::atomic::{AtomicUsize, Ordering};
-use std::fmt::Write;
+use std::fmt::{Display, Formatter};
 use std::collections::HashSet;
+use std::fmt;
 
 include!("NFA.rs");
 include!("State.rs");

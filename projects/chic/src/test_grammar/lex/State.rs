@@ -79,22 +79,19 @@ impl State {
     }
 }
 
-impl ToString for State {
-    fn to_string(&self) -> String {
-        let mut string = String::new();
-
-        write!(&mut string, "({}", &self.id);
+impl Display for State {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "({}", &self.id)?;
 
         match &self.token_type {
-            Some(tt) => { write!(&mut string, ", {}", tt.to_string()); }
+            Some(tt) => { write!(f, ", {}", tt.to_string())?; }
             None => {}
         };
 
         if self.skip {
-            write!(&mut string, ", skip");
+            write!(f, ", skip")?;
         }
 
-        write!(&mut string, ")");
-        string
+        write!(f, ")")
     }
 }

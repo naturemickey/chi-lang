@@ -10,12 +10,8 @@ impl Token {
     }
 }
 
-impl ToString for Token {
-    fn to_string(&self) -> String {
-        let mut s = String::new();
-
-        write!(s, "({}, {})", self.token_type.to_string(), self.literal);
-
-        s
+impl Display for Token {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "({}, {})", self.token_type.to_string(), self.literal)
     }
 }

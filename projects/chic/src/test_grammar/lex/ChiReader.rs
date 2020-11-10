@@ -44,7 +44,7 @@ impl ChiReader {
             let states = self.reader_state.current_states.jump(self.chars[index_now]);
             index_now += 1;
 
-            println!("states length : {}", states.states.len());
+            // println!("states length : {}", states.states.len());
 
             if states.is_empty() {
                 break;
@@ -63,12 +63,19 @@ impl ChiReader {
         let res = Some(self.build_token());
 
         self.reader_state.index_from = index_now + 1;
+        self.reader_state.current_states = self.reader_state.start_states.clone();
+        self.reader_state.last_accepted_states = StateSet::new(vec![]);
 
         res
     }
 
     fn build_token(&self) -> Token {
         let accepted_states = &self.reader_state.last_accepted_states;
+
+        if accepted_states.is_empty() {
+            panic!("{:?}\n{}", self.chars, self.reader_state.to_string());
+        }
+
         let token_type = (*accepted_states.states[0]).borrow().token_type.clone().unwrap();
         let mut literal = "".to_string();
         for idx in self.reader_state.index_from..self.reader_state.index_finish {

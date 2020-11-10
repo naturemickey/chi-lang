@@ -80,9 +80,9 @@ pub enum TokenType {
     LINE_COMMENT,
 }
 
-impl ToString for TokenType {
-    fn to_string(&self) -> String {
-        match self {
+impl Display for TokenType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+      let s =  match self {
             // Keywords
             INT => "INT",
             FLOAT => "FLOAT",
@@ -158,6 +158,7 @@ impl ToString for TokenType {
             WS => "WS",
             COMMENT => "/* */",
             LINE_COMMENT => "//...",
-        }.to_string()
+        };
+        write!(f, "{}", s)
     }
 }

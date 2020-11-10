@@ -99,8 +99,8 @@ impl NFA {
     }
 }
 
-impl ToString for NFA {
-    fn to_string(&self) -> String {
+impl Display for NFA {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let mut state_set = StateSet::new(vec![]);
         let start = self.start.clone();
         let finish = self.finish.clone();
@@ -109,19 +109,15 @@ impl ToString for NFA {
 
         self._to_string_inner(start.clone(), &mut state_set, &mut nexts_str);
 
-        let mut s = String::new();
-
-        write!(s, "[\n");
-        write!(s, "start : {}\n", (*start).borrow().to_string());
-        write!(s, "finish: {}\n", (*finish).borrow().to_string());
-        write!(s, "states: {}\n", state_set.to_string());
-        write!(s, "paths :\n");
+        write!(f, "[\n")?;
+        write!(f, "start : {}\n", (*start).borrow().to_string())?;
+        write!(f, "finish: {}\n", (*finish).borrow().to_string())?;
+        write!(f, "states: {}\n", state_set.to_string())?;
+        write!(f, "paths :\n")?;
         for nstr in nexts_str {
-            write!(s, " {}\n", nstr);
+            write!(f, " {}\n", nstr)?;
         }
-        write!(s, "]\n");
-
-        s
+        write!(f, "]\n")
     }
 }
 
@@ -326,7 +322,7 @@ impl NFA {
         Self::alternate(vec![
             Self::concatenate(vec![
                 Self::new_by_string("\\", None, false),
-                Self::new_by_fn(Rc::new(|c| "btnfr\"'\\".contains(c)), None, fale),
+                Self::new_by_fn(Rc::new(|c| "btnfr\"'\\".contains(c)), None, false),
             ]),
             Self::_octal_escape(),
             Self::_unicode_escape(),

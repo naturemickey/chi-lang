@@ -20,7 +20,7 @@ impl StateNext {
         match &self.cond {
             StateNextCond::NONE => None, // 在真正跳转的时候不应该走这里；空条件应该是等价状态处理的。
             StateNextCond::CHAR(_c) => {
-                println!("c & c : {} {}", c, _c);
+                // println!("c & c : {} {}", c, _c);
                 if c == *_c {
                     Some(self.next.clone())
                 } else {
@@ -42,18 +42,15 @@ enum StateNextCond {
     FN(Rc<dyn Fn(char) -> bool>),
 }
 
-impl ToString for StateNext {
-    fn to_string(&self) -> String {
-        let mut s = String::new();
+impl Display for StateNext {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         let next_str = (*self.next).borrow().to_string();
 
         match &self.cond {
-            StateNextCond::NONE => write!(s, " -> {}", next_str),
-            StateNextCond::CHAR(c) => write!(s, " -> {} : ({})", next_str, visible_char(c)),
-            StateNextCond::FN(_) => write!(s, " -> {} : Fn", next_str), // 无法打印Fn的内容，有点糟糕。
-        };
-
-        s
+            StateNextCond::NONE => write!(f, " -> {}", next_str),
+            StateNextCond::CHAR(c) => write!(f, " -> {} : ({})", next_str, visible_char(c)),
+            StateNextCond::FN(_) => write!(f, " -> {} : Fn", next_str), // 无法打印Fn的内容，有点糟糕。
+        }
     }
 }
 
@@ -69,8 +66,6 @@ fn visible_char(c: &char) -> String {
     } else if ch == '\n' as u64 {
         "\\n".to_string()
     } else {
-        let mut s = String::new();
-        write!(s, "\\u{:02X}", ch);
-        s
+        format!("\\u{:02X}",ch)
     }
 }

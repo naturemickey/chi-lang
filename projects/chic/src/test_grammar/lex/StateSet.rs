@@ -27,12 +27,12 @@ impl StateSet {
     }
 
     pub fn jump(&self, c: char) -> StateSet {
-        println!("current state_set length is {}", self.states.len());
+        // println!("current state_set length is {}", self.states.len());
         let mut state_set = StateSet { states: Vec::new() };
         for state in &self.states {
             let ss = (**state).borrow().jump(c);
 
-            println!("ss length is {}", ss.states.len());
+            // println!("ss length is {}", ss.states.len());
             state_set.merge(ss);
         }
         state_set
@@ -68,17 +68,19 @@ impl StateSet {
     }
 }
 
-impl ToString for StateSet {
-    fn to_string(&self) -> String {
-        let mut s = String::new();
-
-        write!(s, "[");
+impl Display for StateSet {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        write!(f, "[")?;
         for state in &self.states {
-            write!(s, "{}", (**state).borrow().to_string());
-            write!(s, ", ");
+            write!(f, "{}", (**state).borrow().to_string())?;
+            write!(f, ", ")?;
         }
-        write!(s, "]");
+        write!(f, "]")
+    }
+}
 
-        s
+impl Clone for StateSet {
+    fn clone(&self) -> Self {
+        Self { states: self.states.clone() }
     }
 }

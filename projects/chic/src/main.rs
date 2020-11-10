@@ -1,7 +1,7 @@
 extern crate chic;
 
-use chic::grammar::lex::NFA;
-use chic::grammar::lex::TokenType::{INT, FLOAT};
+use chic::test_grammar::lex::NFA;
+use chic::test_grammar::lex::TokenType::{INT, FLOAT};
 
 fn main() {
     f2();
