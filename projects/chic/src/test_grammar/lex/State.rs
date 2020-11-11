@@ -84,7 +84,7 @@ impl Display for State {
         write!(f, "({}", &self.id)?;
 
         match &self.token_type {
-            Some(tt) => { write!(f, ", {}", tt.to_string())?; }
+            Some(tt) => { write!(f, ", {}", tt)?; }
             None => {}
         };
 

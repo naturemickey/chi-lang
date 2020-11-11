@@ -1,11 +1,19 @@
 extern crate chic;
 
 use chic::test_grammar::lex::NFA;
-use chic::test_grammar::lex::TokenType::{INT, FLOAT};
+use chic::test_grammar::lex::TokenType::{FLOAT, INT};
 
 fn main() {
-    f2();
+    f3();
 }
+
+#[allow(dead_code)]
+fn f3() {
+    //let _ws_c = NFA::_ws();
+
+    //println!("{}", _ws_c.to_string());
+}
+
 #[allow(dead_code)]
 fn f1() {
     let _int = NFA::new_by_string("int", Some(INT), false);
@@ -14,10 +22,11 @@ fn f1() {
     println!("{}", _int.to_string());
     println!("{}", _float.to_string());
 
-    let nfa = NFA::alternate( vec![_int, _float]);
+    let nfa = NFA::alternate(vec![_int, _float]);
     println!("{}", nfa.to_string());
 }
 
+#[allow(dead_code)]
 fn f2() {
     let nfa = NFA::chi_nfa();
 

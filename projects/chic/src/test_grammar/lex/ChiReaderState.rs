@@ -8,11 +8,11 @@ struct ChiReaderState {
 
 impl ChiReaderState {
     pub fn new(nfa: Rc<NFA>) -> ChiReaderState {
-        let start_states = StateSet::new(vec![nfa.start.clone()]);
-        let mut current_states = start_states.clone();
-
+        let mut start_states = StateSet::new(vec![nfa.start.clone()]);
         // 添加所有等价节点
-        current_states.merge((*nfa.start).borrow().eq_state_vec());
+        start_states.merge((*nfa.start).borrow().eq_state_vec());
+
+        let current_states = start_states.clone();
 
         let last_accepted_states = StateSet::new(vec![]);
 

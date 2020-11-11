@@ -66,13 +66,17 @@ impl StateSet {
     pub fn is_empty(&self) -> bool {
         self.states.is_empty()
     }
+
+    pub fn len(&self) -> usize {
+        self.states.len()
+    }
 }
 
 impl Display for StateSet {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
         write!(f, "[")?;
         for state in &self.states {
-            write!(f, "{}", (**state).borrow().to_string())?;
+            write!(f, "{}", (**state).borrow())?;
             write!(f, ", ")?;
         }
         write!(f, "]")
@@ -81,6 +85,10 @@ impl Display for StateSet {
 
 impl Clone for StateSet {
     fn clone(&self) -> Self {
-        Self { states: self.states.clone() }
+        // println!("self: {}", self);
+        let res = Self { states: self.states.clone() };
+
+        // println!("self.clone: {}", res);
+        res
     }
 }

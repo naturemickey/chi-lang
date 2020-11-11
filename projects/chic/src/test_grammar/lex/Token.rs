@@ -12,6 +12,6 @@ impl Token {
 
 impl Display for Token {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        write!(f, "({}, {})", self.token_type.to_string(), self.literal)
+        write!(f, "({}, {})", self.token_type, self.literal)
     }
 }

@@ -110,9 +110,9 @@ impl Display for NFA {
         self._to_string_inner(start.clone(), &mut state_set, &mut nexts_str);
 
         write!(f, "[\n")?;
-        write!(f, "start : {}\n", (*start).borrow().to_string())?;
-        write!(f, "finish: {}\n", (*finish).borrow().to_string())?;
-        write!(f, "states: {}\n", state_set.to_string())?;
+        write!(f, "start : {}\n", (*start).borrow())?;
+        write!(f, "finish: {}\n", (*finish).borrow())?;
+        write!(f, "states: {}\n", state_set)?;
         write!(f, "paths :\n")?;
         for nstr in nexts_str {
             write!(f, " {}\n", nstr)?;
@@ -260,9 +260,11 @@ impl NFA {
 
     fn _ws() -> NFA {
         // [ \t\r\n\u000C]+  -> skip ;
-        let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        // let _ws_c = NFA::new_by_string(" \t\r\n\u{000C}", None, false);
+        let _ws_c = NFA::new_by_fn(Rc::new(|c| c == ' ' || c == '\t' || c == '\r' || c == '\n' || c == '\u{000C}'), None, false);
         let mut _ws = NFA::kleen_closure_plus(_ws_c);
         (*_ws.finish).borrow_mut().skip = true;
+        (*_ws.finish).borrow_mut().token_type = Some(WS);
         _ws
     }
 
