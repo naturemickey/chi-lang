@@ -7,7 +7,7 @@ pub struct ChiReader {
 
 impl ChiReader {
     pub fn new(nfa: Rc<NFA>, s: String) -> ChiReader {
-        println!("nfa: {}", nfa);
+        // println!("nfa: {}", nfa);
 
         let mut chars = Vec::new();
 
@@ -33,7 +33,7 @@ impl ChiReader {
     }
 
     pub fn get_next_token(&mut self) -> Option<Token> {
-        println!("current_states: {}", self.reader_state.current_states);
+        // println!("current_states: {}", self.reader_state.current_states);
 
         let mut index_now = self.reader_state.index_from;
 
@@ -44,7 +44,7 @@ impl ChiReader {
         }
 
         loop {
-            println!("index_now & chars.len: {}, {}", index_now, self.chars.len());
+            // println!("index_now & chars.len: {}, {}", index_now, self.chars.len());
             if index_now >= self.chars.len() {
                 break;
             }
@@ -65,8 +65,8 @@ impl ChiReader {
             let accepted_states = states.accepted_states();
             self.reader_state.current_states = states;
 
-            println!("reader_state: {}", self.reader_state);
-            println!("accepted_state_len: {}", accepted_states.len());
+            // println!("reader_state: {}", self.reader_state);
+            // println!("accepted_state_len: {}", accepted_states.len());
 
             if !accepted_states.is_empty() {
                 self.reader_state.index_finish = index_now;
@@ -86,8 +86,8 @@ impl ChiReader {
     fn build_token(&self) -> Token {
         let accepted_states = &self.reader_state.last_accepted_states;
 
-        println!("accepted_state_len: {}", accepted_states.len());
-        println!("accepted_states.is_empty: {}", accepted_states.is_empty());
+        // println!("accepted_state_len: {}", accepted_states.len());
+        // println!("accepted_states.is_empty: {}", accepted_states.is_empty());
 
         if accepted_states.is_empty() {
             panic!("chars: {:?}\nreader_state: {}", self.chars, self.reader_state);
@@ -100,7 +100,7 @@ impl ChiReader {
         }
         let token = Token { token_type: token_type, literal };
 
-        println!("token: {}", token);
+        // println!("token: {}", token);
 
         token
     }
