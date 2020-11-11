@@ -15,6 +15,7 @@ pub enum TokenType {
     OVERRIDE,
     TAILREC,
     CLASS,
+    OBJECT,
 
     // Separators
     LPAREN,
@@ -82,7 +83,7 @@ pub enum TokenType {
 
 impl Display for TokenType {
     fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-      let s =  match self {
+        let s = match self {
             // Keywords
             INT => "INT",
             FLOAT => "FLOAT",
@@ -97,6 +98,7 @@ impl Display for TokenType {
             OVERRIDE => "OVERRIDE",
             TAILREC => "TAILREC",
             CLASS => "CLASS",
+            OBJECT => "OBJECT",
 
             // Separators
             LPAREN => "(",
@@ -108,7 +110,6 @@ impl Display for TokenType {
             SEMI => ";",
             COMMA => ",",
             DOT => ".",
-
 
             // Operators
             ASSIGN => "=",
