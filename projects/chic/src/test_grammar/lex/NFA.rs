@@ -296,6 +296,12 @@ impl NFA {
         nfa_vec.push(Self::_comment());
         nfa_vec.push(Self::_line_comment());
 
+        for nfa in &nfa_vec {
+            if nfa.finish.borrow_mut().token_type.is_none() {
+                panic!("there is no finish state of the nfa: {}", nfa);
+            }
+        }
+
         Rc::new(NFA::alternate(nfa_vec))
     }
 
@@ -330,7 +336,7 @@ impl NFA {
         let start = NFA::new_by_string("/*", None, false);
         let finish = NFA::new_by_string("*/", Some(COMMENT), true);
 
-        let middle = NFA::new_by_fn(Rc::new(|_| true), None, false);
+        let middle = NFA::kleen_closure(NFA::new_by_fn(Rc::new(|_| true), None, false));
 
         NFA::concatenate(vec![start, middle, finish])
     }
@@ -338,7 +344,7 @@ impl NFA {
     fn _line_comment() -> NFA {
         // '//' ~[\r\n]*     -> skip ;
         let start = NFA::new_by_string("//", None, false);
-        let rest = NFA::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), None, false);
+        let rest = NFA::kleen_closure(NFA::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), None, false));
 
         (*rest.finish).borrow_mut().skip = true;
         (*rest.finish).borrow_mut().token_type = Some(LINE_COMMENT);
@@ -363,10 +369,14 @@ impl NFA {
         // 	;
         let prefix_and_suffix = || Self::new_by_string("'", None, false);
 
-        Self::alternate(vec![
+        let nfa = Self::alternate(vec![
             Self::concatenate(vec![prefix_and_suffix(), Self::_single_character(), prefix_and_suffix()]),
             Self::concatenate(vec![prefix_and_suffix(), Self::_escape_sequence(), prefix_and_suffix()])
-        ])
+        ]);
+
+        nfa.finish.borrow_mut().token_type = Some(CHARACTER);
+
+        nfa
     }
 }
 

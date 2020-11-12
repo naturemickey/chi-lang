@@ -4,7 +4,9 @@ fn test_1() {
     }\
     \
     fun main(args : string[]) {\
-        int a = 0;
+        int a = 0L;
+        let mut c = 'c';
+        let f: float = 0;
     }";
 
     let nfa = NFA::chi_nfa();
