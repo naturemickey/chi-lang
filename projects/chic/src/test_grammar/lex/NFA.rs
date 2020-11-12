@@ -291,6 +291,7 @@ impl NFA {
         nfa_vec.push(Self::_integer_literal());
         nfa_vec.push(Self::_character_literal());
         nfa_vec.push(Self::_identifier());
+        nfa_vec.push(Self::_string_literal());
 
         nfa_vec.push(Self::_ws());
         nfa_vec.push(Self::_comment());
@@ -378,10 +379,46 @@ impl NFA {
 
         nfa
     }
+
+    fn _string_literal() -> NFA {
+        // StringLiteral
+        // 	:	'"' StringCharacters? '"'
+        // 	;
+        let string_characters = Self::_string_characters();
+
+        let nfa = Self::concatenate(vec![
+            Self::new_by_string("\"", None, false),
+            string_characters,
+            Self::new_by_string("\"", None, false),
+        ]);
+
+        nfa.finish.borrow_mut().token_type = Some(StringLiteral);
+
+        nfa
+    }
 }
 
 impl NFA {
     // fragment
+
+    fn _string_characters() -> NFA {
+        // fragment
+        // StringCharacters
+        // 	:	StringCharacter*
+        // 	;
+        Self::kleen_closure(Self::_string_character())
+    }
+
+    fn _string_character() -> NFA {
+        // fragment
+        // StringCharacter
+        // 	:	~["\\\r\n]
+        // 	|	EscapeSequence
+        // 	;
+        let single_char = NFA::new_by_fn(Rc::new(|c| !"\"\\\r\n".contains(c)), None, false);
+
+        Self::alternate(vec![single_char, Self::_escape_sequence()])
+    }
 
     fn _escape_sequence() -> NFA {
         // fragment

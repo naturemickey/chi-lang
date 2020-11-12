@@ -1,12 +1,15 @@
 #[test]
 fn test_1() {
     let s = "public class A {\
+        /* ttt */
+        // aabbcc
     }\
     \
     fun main(args : string[]) {\
         int a = 0L;
         let mut c = 'c';
         let f: float = 0;
+        let s = \"abc\";
     }";
 
     let nfa = NFA::chi_nfa();

@@ -195,6 +195,23 @@ CharacterLiteral
 	|	'\'' EscapeSequence '\''
 	;
 
+// String Literals
+
+StringLiteral
+	:	'"' StringCharacters '"'
+	;
+
+fragment
+StringCharacters
+	:	StringCharacter*
+	;
+
+fragment
+StringCharacter
+	:	~["\\\r\n]
+	|	EscapeSequence
+	;
+
 // Escape Sequences for Character and String Literals
 
 fragment
