@@ -1,6 +1,11 @@
 #[test]
 fn test_1() {
-    let s = "public class A {}";
+    let s = "public class A {\
+    }\
+    \
+    fun main(args : string[]) {\
+        int a = 0;
+    }";
 
     let nfa = NFA::chi_nfa();
 

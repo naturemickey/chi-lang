@@ -95,7 +95,7 @@ impl NFA {
 
     pub fn non_or_one(nfa: NFA) -> NFA {
         let next = StateNext::new_no_cond(nfa.finish.clone());
-        nfa.start.borrow_mut().next_vec.push(next);
+        (*nfa.start).borrow_mut().next_vec.push(next);
         nfa
     }
 }
@@ -310,7 +310,7 @@ impl NFA {
         );
 
         let id = NFA::concatenate(vec![start, parts]);
-        id.finish.borrow_mut().token_type = Some(Identifier);
+        (*id.finish).borrow_mut().token_type = Some(Identifier);
 
         id
     }
@@ -340,8 +340,8 @@ impl NFA {
         let start = NFA::new_by_string("//", None, false);
         let rest = NFA::new_by_fn(Rc::new(|c| c != '\r' && c != '\n'), None, false);
 
-        rest.finish.borrow_mut().skip = true;
-        rest.finish.borrow_mut().token_type = Some(LINE_COMMENT);
+        (*rest.finish).borrow_mut().skip = true;
+        (*rest.finish).borrow_mut().token_type = Some(LINE_COMMENT);
 
         NFA::concatenate(vec![start, rest])
     }
@@ -350,6 +350,8 @@ impl NFA {
         let nfa = Self::_decimal_integer_literal();
 
         // 未来扩展，目前先做一个十进制
+
+        (*nfa.finish).borrow_mut().token_type = Some(IntegerLiteral);
 
         nfa
     }
