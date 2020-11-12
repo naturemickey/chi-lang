@@ -40,6 +40,8 @@ impl ChiReader {
     pub fn get_next_token(&mut self) -> Option<Token> {
         // println!("current_states: {}", self.reader_state.current_states);
 
+        let from = self.reader_state.index_from;
+
         let mut index_now = self.reader_state.index_from;
 
         // println!("index_now & chars.len: {}, {}", index_now, self.chars.len());
@@ -56,6 +58,7 @@ impl ChiReader {
             let states = self.reader_state.current_states.jump(self.chars[index_now]);
 
             // println!("states length : {}", states.states.len());
+            // println!("states: {}", states);
 
             if states.is_empty() {
                 if self.reader_state.last_accepted_states.is_empty() {
@@ -84,6 +87,10 @@ impl ChiReader {
         self.reader_state.index_from = self.reader_state.index_finish;
         self.reader_state.current_states = self.reader_state.start_states.clone();
         self.reader_state.last_accepted_states = StateSet::new(vec![]);
+
+        if from >= self.reader_state.index_from {
+            panic!();
+        }
 
         res
     }

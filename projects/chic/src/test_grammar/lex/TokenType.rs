@@ -125,6 +125,7 @@ pub enum TokenType {
 
     BooleanLiteral,
     IntegerLiteral,
+    FloatingPointLiteral,
     CharacterLiteral,
     StringLiteral,
     Identifier,
@@ -258,6 +259,7 @@ impl Display for TokenType {
             URSHIFT_ASSIGN => "URSHIFT_ASSIGN",
             BooleanLiteral => "BooleanLiteral",
             IntegerLiteral => "IntegerLiteral",
+            FloatingPointLiteral => "FloatingPointLiteral",
             CharacterLiteral => "CharacterLiteral",
             StringLiteral => "StringLiteral",
             Identifier => "Identifier",

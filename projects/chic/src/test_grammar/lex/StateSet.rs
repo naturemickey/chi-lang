@@ -33,6 +33,8 @@ impl StateSet {
             let ss = (**state).borrow().jump(c);
 
             // println!("ss length is {}", ss.states.len());
+            // println!("ss: {}", ss);
+
             state_set.merge(ss);
         }
         state_set

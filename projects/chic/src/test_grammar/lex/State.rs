@@ -35,6 +35,22 @@ impl State {
     }
 
     pub fn add_next(&mut self, next: StateNext) {
+        // 这个match纯属做个校验，不过没啥用。
+        match next.cond {
+            StateNextCond::NONE => {
+                for n in &self.next_vec {
+                    match n.cond {
+                        StateNextCond::NONE => {
+                            if Rc::ptr_eq(&next.next, &n.next) {
+                                panic!()
+                            }
+                        }
+                        _ => {}
+                    }
+                }
+            }
+            _ => {}
+        }
         self.next_vec.push(next);
     }
 
@@ -44,16 +60,50 @@ impl State {
     pub fn eq_state_vec(&self) -> StateSet {
         let mut state_set = StateSet::new(vec![]);
 
+        let mut stack = Vec::new();
+
         for next in &self.next_vec {
             match next.cond {
-                StateNextCond::NONE => {
-                    if state_set.add(next.next.clone()) { // 如果能添加，就认为是新的，于是递归；
-                        state_set.merge((*next.next.clone()).borrow().eq_state_vec());
-                    }
-                }
+                StateNextCond::NONE => { stack.push(next.next.clone()) }
                 _ => {}
             }
         }
+
+        while stack.len() > 0 {
+            match stack.pop() {
+                Some(state) => {
+                    if state_set.add(state.clone()) {
+                        for next in &(*state).borrow().next_vec {
+                            match next.cond {
+                                StateNextCond::NONE => { stack.push(next.next.clone()) }
+                                _ => {}
+                            }
+                        }
+                    }
+                },
+                None => {
+                    panic!("不可能为None");
+                }
+            }
+        }
+
+        // for next in &self.next_vec {
+        //     match next.cond {
+        //         StateNextCond::NONE => {
+        //             if self.id != (*next.next).borrow().id {
+        //                 if state_set.add(next.next.clone()) { // 如果能添加，就认为是新的，于是递归；
+        //                     println!("xxxxxxxx");
+        //                     state_set.merge((*next.next.clone()).borrow().eq_state_vec());
+        //                     println!("yyyyyyyy");
+        //                 }
+        //             }
+        //         },
+        //         _ => {},
+        //     }
+        // }
+
+        // println!("state_set: {}", state_set);
+
         state_set
     }
 
@@ -62,9 +112,12 @@ impl State {
     因为是NFA的状态，所以下一状态的个数是不确定的。
     */
     fn jump(&self, c: char) -> StateSet {
+        // println!("self states: {}", self);
+
         let mut state_set = StateSet::new(vec![]);
 
         for sn in &self.next_vec {
+            // println!("sn: {}, c: {}", sn, c);
             match sn.jump(c) {
                 Some(next) => {
                     if state_set.add(next.clone()) {
@@ -74,6 +127,8 @@ impl State {
                 None => {}
             }
         }
+
+        // println!("state_set: {}", state_set);
 
         state_set
     }

@@ -100,49 +100,6 @@ impl NFA {
     }
 }
 
-impl Display for NFA {
-    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
-        let mut state_set = StateSet::new(vec![]);
-        let start = self.start.clone();
-        let finish = self.finish.clone();
-
-        let mut nexts_str = HashSet::<String>::new();
-
-        self._to_string_inner(start.clone(), &mut state_set, &mut nexts_str);
-
-        write!(f, "[\n")?;
-        write!(f, "start : {}\n", (*start).borrow())?;
-        write!(f, "finish: {}\n", (*finish).borrow())?;
-        write!(f, "states: {}\n", state_set)?;
-        write!(f, "paths :\n")?;
-        for nstr in nexts_str {
-            write!(f, " {}\n", nstr)?;
-        }
-        write!(f, "]\n")
-    }
-}
-
-impl NFA {
-    fn _to_string_inner(&self, from: Rc<RefCell<State>>, state_set: &mut StateSet, nexts_str: &mut HashSet<String>) {
-        if state_set.add(from.clone()) {
-            let state_str = (*from).borrow().to_string();
-
-            let mut set2 = StateSet::new(vec![]);
-
-            for next in &(*from).borrow().next_vec {
-                nexts_str.insert(state_str.to_string() + &next.to_string());
-
-                set2.add(next.next.clone());
-                // self._to_string_inner(next.next.clone(), state_set, nexts_str);
-            }
-
-            for state in set2.states {
-                self._to_string_inner(state, state_set, nexts_str);
-            }
-        }
-    }
-}
-
 impl NFA {
     pub fn chi_nfa() -> Rc<NFA> {
         // Keywords
@@ -289,6 +246,7 @@ impl NFA {
         nfa_vec.append(&mut booleans_nfas);
 
         nfa_vec.push(Self::_integer_literal());
+        nfa_vec.push(Self::_floating_point_literal());
         nfa_vec.push(Self::_character_literal());
         nfa_vec.push(Self::_identifier());
         nfa_vec.push(Self::_string_literal());
@@ -353,12 +311,23 @@ impl NFA {
         NFA::concatenate(vec![start, rest])
     }
 
-    fn _integer_literal() -> NFA {
+    pub fn _integer_literal() -> NFA {
         let nfa = Self::_decimal_integer_literal();
 
         // 未来扩展，目前先做一个十进制
 
         (*nfa.finish).borrow_mut().token_type = Some(IntegerLiteral);
+
+        nfa
+    }
+
+    pub fn _floating_point_literal() -> Self {
+        // FloatingPointLiteral
+        // 	:	DecimalFloatingPointLiteral
+        // 	;
+        let nfa = Self::_decimal_floating_point_literal();
+
+        nfa.finish.borrow_mut().token_type = Some(FloatingPointLiteral);
 
         nfa
     }
@@ -400,6 +369,70 @@ impl NFA {
 
 impl NFA {
     // fragment
+
+    fn _decimal_floating_point_literal() -> Self {
+        // fragment
+        // DecimalFloatingPointLiteral
+        // 	:	Digits '.' Digits? ExponentPart? FloatTypeSuffix?
+        // 	|	'.' Digits ExponentPart? FloatTypeSuffix?
+        // 	|	Digits ExponentPart FloatTypeSuffix?
+        // 	|	Digits FloatTypeSuffix
+        // 	;
+        Self::alternate(vec![
+            Self::concatenate(vec![
+                Self::_digits(),
+                Self::new_by_string(".", None, false),
+                Self::non_or_one(Self::_digits()),
+                Self::non_or_one(Self::_exponent_part()),
+                Self::non_or_one(Self::_float_type_suffix()),
+            ]),
+            Self::concatenate(vec![
+                Self::new_by_string(".", None, false),
+                Self::_digits(),
+                Self::non_or_one(Self::_exponent_part()),
+                Self::non_or_one(Self::_float_type_suffix()),
+            ]),
+            Self::concatenate(vec![
+                Self::_digits(),
+                Self::_exponent_part(),
+                Self::non_or_one(Self::_float_type_suffix()),
+            ]),
+            Self::concatenate(vec![
+                Self::_digits(),
+                Self::_float_type_suffix(),
+            ])
+        ])
+    }
+
+    fn _exponent_part() -> Self {
+        // fragment
+        // ExponentPart
+        // 	:	ExponentIndicator SignedInteger
+        // 	;
+        Self::concatenate(vec![Self::_exponent_indicator(), Self::_signed_integer()])
+    }
+
+    fn _exponent_indicator() -> Self {
+        Self::new_by_fn(Rc::new(|c| c == 'e' || c == 'E'), None, false)
+    }
+
+    fn _signed_integer() -> Self {
+        // fragment
+        // SignedInteger
+        // 	:	Sign? Digits
+        // 	;
+        let sign = Self::non_or_one(Self::_sign());
+        let digits = Self::_digits();
+        Self::concatenate(vec![sign, digits])
+    }
+
+    fn _sign() -> Self {
+        Self::new_by_fn(Rc::new(|c| "+-".contains(c)), None, false)
+    }
+
+    fn _float_type_suffix() -> NFA {
+        Self::new_by_fn(Rc::new(|c| "fFdD".contains(c)), None, false)
+    }
 
     fn _string_characters() -> NFA {
         // fragment
@@ -526,5 +559,48 @@ impl NFA {
         // [0-9]+
         let nfa = Self::new_by_fn(Rc::new(|c| '0' <= c && c <= '9'), None, false);
         Self::kleen_closure_plus(nfa)
+    }
+}
+
+impl Display for NFA {
+    fn fmt(&self, f: &mut Formatter<'_>) -> fmt::Result {
+        let mut state_set = StateSet::new(vec![]);
+        let start = self.start.clone();
+        let finish = self.finish.clone();
+
+        let mut nexts_str = HashSet::<String>::new();
+
+        self._to_string_inner(start.clone(), &mut state_set, &mut nexts_str);
+
+        write!(f, "[\n")?;
+        write!(f, "start : {}\n", (*start).borrow())?;
+        write!(f, "finish: {}\n", (*finish).borrow())?;
+        write!(f, "states: {}\n", state_set)?;
+        write!(f, "paths :\n")?;
+        for nstr in nexts_str {
+            write!(f, " {}\n", nstr)?;
+        }
+        write!(f, "]\n")
+    }
+}
+
+impl NFA {
+    fn _to_string_inner(&self, from: Rc<RefCell<State>>, state_set: &mut StateSet, nexts_str: &mut HashSet<String>) {
+        if state_set.add(from.clone()) {
+            let state_str = (*from).borrow().to_string();
+
+            let mut set2 = StateSet::new(vec![]);
+
+            for next in &(*from).borrow().next_vec {
+                nexts_str.insert(state_str.to_string() + &next.to_string());
+
+                set2.add(next.next.clone());
+                // self._to_string_inner(next.next.clone(), state_set, nexts_str);
+            }
+
+            for state in set2.states {
+                self._to_string_inner(state, state_set, nexts_str);
+            }
+        }
     }
 }
