@@ -1,21 +1,21 @@
-
 #[test]
 fn test_1() {
-    let s = "int float";
+    let s = "public class A {}";
 
     let nfa = NFA::chi_nfa();
 
     // (*nfa).print();
 
-    let mut reader = ChiReader::new(nfa.clone(), s.to_string());
+    let mut reader = ChiReader::new(nfa.clone(), s);
 
     let tokens = reader.the_rest_of_tokens();
 
-    let tokens_comp = vec![
-        Token::new(TokenType::INT, "int"),
-        Token::new(TokenType::WS, " "),
-        Token::new(TokenType::FLOAT, "float"),
+    let vec1 = vec![
+        Token::new(TokenType::INT, "int", false),
+//        Token::new(TokenType::WS, " ", false),
+        Token::new(TokenType::FLOAT, "float", false),
     ];
+    let tokens_comp = vec1;
 
     for token in &tokens {
         println!("{}", token.to_string());

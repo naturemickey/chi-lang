@@ -6,7 +6,7 @@ pub struct ChiReader {
 }
 
 impl ChiReader {
-    pub fn new(nfa: Rc<NFA>, s: String) -> ChiReader {
+    pub fn new(nfa: Rc<NFA>, s: &str) -> ChiReader {
         // println!("nfa: {}", nfa);
 
         let mut chars = Vec::new();
@@ -24,7 +24,12 @@ impl ChiReader {
 
         loop {
             match self.get_next_token() {
-                Some(token) => res.push(token),
+                Some(token) => {
+                    match token.skip{
+                        true => {}
+                        false => res.push(token)
+                    }
+                }
                 None => break,
             }
         }
@@ -93,12 +98,13 @@ impl ChiReader {
             panic!("chars: {:?}\nreader_state: {}", self.chars, self.reader_state);
         }
 
-        let token_type = (*accepted_states.states[0]).borrow().token_type.clone().unwrap();
+        let state = (*accepted_states.states[0]).borrow();
+        let token_type = state.token_type.clone().unwrap();
         let mut literal = "".to_string();
         for idx in self.reader_state.index_from..self.reader_state.index_finish {
             literal.push(self.chars[idx]);
         }
-        let token = Token { token_type: token_type, literal };
+        let token = Token::new(token_type, &literal, state.skip);
 
         // println!("token: {}", token);
 

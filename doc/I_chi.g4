@@ -86,14 +86,14 @@ FINAL : 'final' ;
 FINALLY : 'finally' ;
 FOR : 'for';
 GOTO : 'goto';
-IMPLEMENTS : 'implements';
+IMPLEMENTS : 'impl' | 'implements';
 IMPORT : 'import';
 INSTANCEOF : 'instanceof';
 INTERFACE : 'interface';
 LONG : 'long';
 NATIVE : 'native';
 NEW : 'new';
-PACKAGE : 'package';
+PACKAGE : 'pkg' | 'package';
 RETURN : 'return';
 SHORT : 'short';
 STATIC : 'static';
@@ -115,6 +115,19 @@ USE : 'use' ;
 SEALED : 'sealed';
 SELF : 'self' ;
 MATCH : 'match' ;
+ABSTRACT : 'abstract';
+ASSERT : 'assert';
+BREAK : 'break';
+BYTE : 'byte';
+CASE : 'case';
+DEFINE : 'def' | 'define' ;
+VAL : 'val';
+VAR : 'var' ;
+TYPE : 'type' ;
+LAZY : 'lazy' ;
+IMPLICIT : 'implicit';
+YIELD : 'yield';
+// NULL : 'null';
 
 // Separators
 
@@ -244,9 +257,9 @@ fragment Digits       : [0-9]+ ;
 
 
 // 这里标识符暂时只支持这些，还不打算支持更复杂的文字。虽然很多语言都支持“中文”，但似乎各种规范都不希望程序员使用中文。
-Identifier      : IdentifierStart IdentifierPart*   ;
-IdentifierStart : [_A-Za-z]                         ;
-IdentifierPart  : [_A-Za-z0-9]                      ;
+Identifier               : IdentifierStart IdentifierPart*   ;
+fragment IdentifierStart : [_A-Za-z]                         ;
+fragment IdentifierPart  : [_A-Za-z0-9]                      ;
 
 WS              : [ \t\r\n\u000C]+  -> skip ;
 COMMENT         : '/*' .* '*/'      -> skip ;

@@ -68,6 +68,7 @@ impl NFA {
             if first {
                 first = false;
                 start = nfa.start.clone();
+                finish = nfa.finish.clone();
             } else {
                 (*finish).borrow_mut().add_next(StateNext::new_no_cond(nfa.start.clone()));
                 finish = nfa.finish.clone();
@@ -148,22 +149,16 @@ impl NFA {
         let mut keyworlds_nfas = vec![
             NFA::new_by_string("int", Some(INT), false),
             NFA::new_by_string("float", Some(FLOAT), false),
-
             NFA::new_by_string("bool", Some(BOOL), false),
             NFA::new_by_string("boolean", Some(BOOL), false),
-
             NFA::new_by_string("pub", Some(PUBLIC), false),
             NFA::new_by_string("public", Some(PUBLIC), false),
-
             NFA::new_by_string("pvt", Some(PRIVATE), false),
             NFA::new_by_string("private", Some(PRIVATE), false),
-
             NFA::new_by_string("prtc", Some(PROTECTED), false),
             NFA::new_by_string("protected", Some(PROTECTED), false),
-
             NFA::new_by_string("fun", Some(FUNCTION), false),
             NFA::new_by_string("function", Some(FUNCTION), false),
-
             NFA::new_by_string("let", Some(LET), false),
             NFA::new_by_string("mut", Some(MUTABLE), false),
             NFA::new_by_string("char", Some(CHARACTER), false),
@@ -171,6 +166,64 @@ impl NFA {
             NFA::new_by_string("tailrec", Some(TAILREC), false),
             NFA::new_by_string("class", Some(CLASS), false),
             NFA::new_by_string("object", Some(OBJECT), false),
+            NFA::new_by_string("impl", Some(IMPLEMENTS), false),
+            NFA::new_by_string("implements", Some(IMPLEMENTS), false),
+            NFA::new_by_string("pkg", Some(PACKAGE), false),
+            NFA::new_by_string("package", Some(PACKAGE), false),
+            NFA::new_by_string("def", Some(DEFINE), false),
+            NFA::new_by_string("define", Some(DEFINE), false),
+            NFA::new_by_string("data", Some(DATA), false),
+            NFA::new_by_string("catch", Some(CATCH), false),
+            NFA::new_by_string("const", Some(CONST), false),
+            NFA::new_by_string("continue", Some(CONTINUE), false),
+            NFA::new_by_string("default", Some(DEFAULT), false),
+            NFA::new_by_string("do", Some(DO), false),
+            NFA::new_by_string("if", Some(IF), false),
+            NFA::new_by_string("else", Some(ELSE), false),
+            NFA::new_by_string("enum", Some(ENUM), false),
+            NFA::new_by_string("extends", Some(EXTENDS), false),
+            NFA::new_by_string("final", Some(FINAL), false),
+            NFA::new_by_string("finally", Some(FINALLY), false),
+            NFA::new_by_string("for", Some(FOR), false),
+            NFA::new_by_string("goto", Some(GOTO), false),
+            NFA::new_by_string("import", Some(IMPORT), false),
+            NFA::new_by_string("instanceof", Some(INSTANCEOF), false),
+            NFA::new_by_string("interface", Some(INTERFACE), false),
+            NFA::new_by_string("long", Some(LONG), false),
+            NFA::new_by_string("native", Some(NATIVE), false),
+            NFA::new_by_string("new", Some(NEW), false),
+            NFA::new_by_string("return", Some(RETURN), false),
+            NFA::new_by_string("short", Some(SHORT), false),
+            NFA::new_by_string("static", Some(STATIC), false),
+            NFA::new_by_string("strictfp", Some(STRICTFP), false),
+            NFA::new_by_string("super", Some(SUPER), false),
+            NFA::new_by_string("switch", Some(SWITCH), false),
+            NFA::new_by_string("synchronized", Some(SYNCHRONIZED), false),
+            NFA::new_by_string("this", Some(THIS), false),
+            NFA::new_by_string("throw", Some(THROW), false),
+            NFA::new_by_string("throws", Some(THROWS), false),
+            NFA::new_by_string("transient", Some(TRANSIENT), false),
+            NFA::new_by_string("try", Some(TRY), false),
+            NFA::new_by_string("void", Some(VOID), false),
+            NFA::new_by_string("volatile", Some(VOLATILE), false),
+            NFA::new_by_string("while", Some(WHILE), false),
+            NFA::new_by_string("trait", Some(TRAIT), false),
+            NFA::new_by_string("with", Some(WITH), false),
+            NFA::new_by_string("use", Some(USE), false),
+            NFA::new_by_string("sealed", Some(SEALED), false),
+            NFA::new_by_string("self", Some(SELF), false),
+            NFA::new_by_string("match", Some(MATCH), false),
+            NFA::new_by_string("abstract", Some(ABSTRACT), false),
+            NFA::new_by_string("assert", Some(ASSERT), false),
+            NFA::new_by_string("break", Some(BREAK), false),
+            NFA::new_by_string("byte", Some(BYTE), false),
+            NFA::new_by_string("case", Some(CASE), false),
+            NFA::new_by_string("val", Some(VAL), false),
+            NFA::new_by_string("var", Some(VAR), false),
+            NFA::new_by_string("type", Some(TYPE), false),
+            NFA::new_by_string("lazy", Some(LAZY), false),
+            NFA::new_by_string("implicit", Some(IMPLICIT), false),
+            NFA::new_by_string("yield", Some(YIELD), false),
         ];
 
         let mut separators_nfas = vec![
@@ -237,12 +290,29 @@ impl NFA {
 
         nfa_vec.push(Self::_integer_literal());
         nfa_vec.push(Self::_character_literal());
+        nfa_vec.push(Self::_identifier());
 
         nfa_vec.push(Self::_ws());
         nfa_vec.push(Self::_comment());
         nfa_vec.push(Self::_line_comment());
 
         Rc::new(NFA::alternate(nfa_vec))
+    }
+
+    pub fn _identifier() -> NFA {
+        // Identifier               : IdentifierStart IdentifierPart*   ;
+        // fragment IdentifierStart : [_A-Za-z]                         ;
+        // fragment IdentifierPart  : [_A-Za-z0-9]                      ;
+
+        let start = NFA::new_by_fn(Rc::new(|c| c == '_' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z')), None, false);
+        let parts = NFA::kleen_closure(
+            NFA::new_by_fn(Rc::new(|c| c == '_' || ('a' <= c && c <= 'z') || ('A' <= c && c <= 'Z') || ('0' <= c && c <= '9')), None, false)
+        );
+
+        let id = NFA::concatenate(vec![start, parts]);
+        id.finish.borrow_mut().token_type = Some(Identifier);
+
+        id
     }
 
     fn _ws() -> NFA {

@@ -1,6 +1,8 @@
 extern crate chic;
 
-use chic::test_grammar::lex::NFA;
+use std::rc::Rc;
+
+use chic::test_grammar::lex::{ChiReader, NFA};
 use chic::test_grammar::lex::TokenType::{FLOAT, INT};
 
 fn main() {
@@ -9,9 +11,13 @@ fn main() {
 
 #[allow(dead_code)]
 fn f3() {
-    //let _ws_c = NFA::_ws();
+    let nfa = Rc::new(NFA::_identifier());
 
-    //println!("{}", _ws_c.to_string());
+    let mut reader = ChiReader::new(nfa, "A");
+
+    for token in reader.the_rest_of_tokens() {
+        println!("{}", token);
+    }
 }
 
 #[allow(dead_code)]

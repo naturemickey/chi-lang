@@ -2,11 +2,12 @@
 pub struct Token {
     token_type: TokenType,
     literal: String,
+    skip: bool,
 }
 
 impl Token {
-    pub fn new(token_type: TokenType, literal: &str) -> Token {
-        Token { token_type, literal: literal.to_string() }
+    pub fn new(token_type: TokenType, literal: &str, skip: bool) -> Token {
+        Token { token_type, literal: literal.to_string(), skip }
     }
 }
 
