@@ -353,11 +353,10 @@ impl NFA {
         // StringLiteral
         // 	:	'"' StringCharacters? '"'
         // 	;
-        let string_characters = Self::_string_characters();
 
         let nfa = Self::concatenate(vec![
             Self::new_by_string("\"", None, false),
-            string_characters,
+            Self::_string_characters(),
             Self::new_by_string("\"", None, false),
         ]);
 
@@ -497,7 +496,7 @@ impl NFA {
         //     :   '\\' 'u'+ '{' HexDigit HexDigit HexDigit HexDigit '}'
         //     ;
         let prefix = Self::concatenate(vec![
-            Self::new_by_string("\\\\", None, false),
+            Self::new_by_string("\\", None, false),
             Self::kleen_closure_plus(Self::new_by_string("u", None, false)),
             Self::new_by_string("{", None, false),
         ]);

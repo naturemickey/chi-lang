@@ -3,7 +3,7 @@ extern crate chic;
 
 use chic::test_grammar::lex::{ChiReader, NFA};
 use chic::test_grammar::lex::TokenType::{FLOAT, INT};
-use std::rc::Rc;
+
 use std::fs::File;
 use std::io::Read;
 

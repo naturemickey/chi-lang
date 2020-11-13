@@ -1,54 +1,10 @@
-grammar I_chi;
+lexer grammar I_chi_Lexer;
 
 // 因为我是完全手写的lexer和parser，所以无所谓用什么形式的语法来表示chi的方法，所以我用Antlr4的g4文件格式来表示chi，因为：
 // 1. 我比较熟悉
 // 2. 以后说不定还用得着（比如移植到jvm上）
 
 // 希望有可能实现ll1型文法——因为足够简单——不过现实往往事与愿违——如果要简单，那还不如直接上S表达式了。
-
-// Parser:
-
-functionDeclaration
-    : FUNCTION Identifier '(' formalParameterList ')' functionBody
-    ;
-formalParameterList
-    : 
-    ;
-
-functionBody
-    : block
-    ;
-
-block
-    : '{' blockStatements? '}'
-    ;
-
-blockStatements
-	: blockStatement+
-	;
-
-blockStatement
-	: localObjectDeclarationStatement
-	| statement
-	;
-
-localObjectDeclarationStatement
-	: localObjectDeclaration ';'
-	;
-
-localObjectDeclaration
-    : LET MUTABLE? Identifier ('=' variableInitializer)?
-    ;
-
-variableInitializer
-    : IntegerLiteral // TODO 先假设只有整数，后面再改。
-    ;
-
-statement
-    : ADD // TODO 明天从这里开始
-    ;
-
-// Lexer:
 
 // Keywords
 

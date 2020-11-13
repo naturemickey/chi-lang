@@ -7,6 +7,7 @@ fun main(args : string[]) {
     int a = 1L;
     let mut c = 'c';
     let f: float = 0.1D;
-    let s = "abc\\u{ABCD}";
+    let s = "abc\u{ABCD}";
     let f1 = 1.23e-5;
+    if (a >= b)
 }
