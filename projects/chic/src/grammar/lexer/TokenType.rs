@@ -1,4 +1,4 @@
-#[derive(Clone, Eq, PartialEq, Debug)]
+#[derive(Clone, Eq, PartialEq, Debug, Copy)]
 #[allow(non_camel_case_types)]
 pub enum TokenType {
     // Keywords
@@ -133,6 +133,12 @@ pub enum TokenType {
     WS,
     COMMENT,
     LINE_COMMENT,
+}
+
+impl TokenType {
+    pub fn get_level(self) -> i32 {
+        self as i32
+    }
 }
 
 impl Display for TokenType {

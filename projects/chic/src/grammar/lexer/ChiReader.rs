@@ -105,13 +105,13 @@ impl ChiReader {
             panic!("chars: {:?}\nreader_state: {}", self.chars, self.reader_state);
         }
 
-        let state = (*accepted_states.states[0]).borrow();
-        let token_type = state.token_type.clone().unwrap();
+        let state = accepted_states.accepted_state().unwrap();
+        let token_type = (*state).borrow().token_type.clone().unwrap();
         let mut literal = "".to_string();
         for idx in self.reader_state.index_from..self.reader_state.index_finish {
             literal.push(self.chars[idx]);
         }
-        let token = Token::new(token_type, &literal, state.skip);
+        let token = Token::new(token_type, &literal, (*state).borrow().skip);
 
         // println!("token: {}", token);
 

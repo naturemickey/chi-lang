@@ -51,6 +51,36 @@ impl StateSet {
         res
     }
 
+    /// 在当前集合中找到级别最高的一个返回(数字越小的级别越高)。
+    pub fn accepted_state(&self) -> Option<Rc<RefCell<State>>> {
+        let mut result = None;
+        for state in &self.states {
+            match &(**state).borrow().token_type {
+                Some(token_type) => {
+                    match &result {
+                        None => {
+                            result = Some(state.clone());
+                        }
+                        Some(rtt) => {
+                            let l1 = match &(*rtt.clone()).borrow().token_type {
+                                None=> i32::MAX,
+                                Some(tt) => tt.get_level()
+                            };
+
+                            let l2 = token_type.get_level();
+
+                            if l1 > l2 {
+                                result = Some(state.clone());
+                            }
+                        }
+                    }
+                }
+                None => {}
+            }
+        }
+        result
+    }
+
     pub fn token_types(&self) -> Vec<TokenType> {
         let mut vec = Vec::new();
 

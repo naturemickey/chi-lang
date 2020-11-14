@@ -1,6 +1,5 @@
 extern crate chic;
 
-
 use chic::grammar::lexer::{ChiReader, NFA};
 use chic::grammar::lexer::TokenType::{FLOAT, INT};
 
