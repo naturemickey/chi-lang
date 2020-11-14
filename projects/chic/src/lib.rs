@@ -1,2 +1,2 @@
 
-pub mod test_grammar;
+pub mod grammar;

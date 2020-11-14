@@ -1,8 +1,8 @@
 extern crate chic;
 
 
-use chic::test_grammar::lex::{ChiReader, NFA};
-use chic::test_grammar::lex::TokenType::{FLOAT, INT};
+use chic::grammar::lexer::{ChiReader, NFA};
+use chic::grammar::lexer::TokenType::{FLOAT, INT};
 
 use std::fs::File;
 use std::io::Read;

@@ -1,5 +1,5 @@
 
-use chic::test_grammar::lex::*;
+use chic::grammar::lexer::*;
 use std::fs::File;
 use std::io::Read;
 
