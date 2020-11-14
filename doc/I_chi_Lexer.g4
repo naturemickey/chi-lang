@@ -1,6 +1,6 @@
 lexer grammar I_chi_Lexer;
 
-// 因为我是完全手写的lexer和parser，所以无所谓用什么形式的语法来表示chi，所以我用Antlr4的g4文件格式来表示chi，因为：
+// 因为我是完全手写的lexer和parser，所以无所谓用什么形式来表示chi，所以我用Antlr4的g4文件格式来表示，因为：
 // 1. 我比较熟悉
 // 2. 以后说不定还用得着（比如移植到jvm上）
 
@@ -15,7 +15,6 @@ FLOAT : 'float' ;
 // main应该只是一个标识符
 // MAIN : 'main' ;
 BOOL : 'bool' | 'boolean' ;
-// 以下全称做为保留不使用。使用简称。
 PUBLIC : 'pub' | 'public' ;
 PRIVATE : 'pvt' | 'private';
 PROTECTED : 'prtc' | 'protected';
