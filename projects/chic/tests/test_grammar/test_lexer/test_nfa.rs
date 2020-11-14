@@ -11,7 +11,7 @@ fn test_1() {
     let tokens = reader.the_rest_of_tokens();
 
     let vec1 = vec![
-        Token::new(TokenType::PUBLIC, "pub", false),
+        Token::new(TokenType::PUBLIC, "public", false),
         Token::new(TokenType::CLASS, "class", false),
         Token::new(TokenType::Identifier, "A", false),
         Token::new(TokenType::LBRACE, "{", false),
@@ -64,10 +64,11 @@ fn test_1() {
     ];
     let tokens_comp = vec1;
 
-    for token in &tokens {
-        println!("{}", token.to_string());
-    }
+    // for token in &tokens {
+    //     println!("{}", token.to_string());
+    // }
 
     assert_eq!(tokens, tokens_comp)
     // println!("{}", &tokens);
 }
+
