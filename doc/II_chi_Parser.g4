@@ -1,4 +1,4 @@
-parser grammar II_chi_parser;
+parser grammar II_chi_Parser;
 
 options {
     tokenVocab=I_chi_Lexer;
