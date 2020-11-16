@@ -6,6 +6,45 @@ options {
 
 // Parser:
 
+classDeclaration 
+    : classModifier* 'class' className=Identifier typeParameters? classBody
+    ;
+
+classModifier
+    : 
+    ;
+
+typeParameters
+    : '<' '>'
+    ;
+
+classBody
+    : '{' classBodyDeclaration* '}'
+    ;
+
+classBodyDeclaration
+    : classMemberDeclaration
+    | constructorDeclaration
+    ;
+
+classMemberDeclaration
+    : fieldDeclaration
+    | methodDeclaration
+    ;
+
+fieldDeclaration
+    :
+    ;
+
+// 这里先抄java的，以后再改成function
+methodDeclaration
+    :
+    ;
+
+constructorDeclaration
+    :
+    ;
+
 functionDeclaration
     : FUNCTION Identifier '(' formalParameterList ')' functionBody
     ;
